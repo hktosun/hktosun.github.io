@@ -9,7 +9,7 @@ We use the <a href="https://ocw.mit.edu/courses/economics/14-271-industrial-orga
 
 I will use <b>R</b> for this homework.
 
-Let's start.
+So, let's get started. 
 
 Step 0: I'll import the necessary R packages that I'll use later.
 
@@ -36,9 +36,14 @@ summary(data)
 To start with, let's do a simple OLS regression of ``` log(quantity)``` on a constant, ```
 log(price)```, ```lakes```, and all the seasonal dummies (except one, since we have already included a constant. I'll exclude the first one). 
 
+```{r}
+seas_dums <- paste("seas",2:13, sep="")
+fmla_ols <- as.formula(paste("log(quantity) ~ log(price) + lakes + ", paste(seas_dums, collapse= "+")))
+olsmodel <- lm(fmla_ols, data = data)
+summary(olsmodel)
+```
 
-
-
+In this (naive) OLS regression, the coefficient for `log(price)`, which we can call "price elasticity", is `r coefficients(olsmodel)["log(price)"]`. Note that it is less than 1 in absolute terms. It implies negative marginal revenues. Why? Check <a href="https://en.wikipedia.org/wiki/Marginal_revenue#Relationship_between_marginal_revenue_and_elasticity">this</a>. Hence, is not consistent with per-period profit maximization. Why? For profit maximization, the marginal cost should be equal to the marginal revenue. Since the marginal cost is positive, and the marginal revenue is negative, they cannot be equal. Therefore, the estimate we get for the elasticity is not reasonable. 
 
 
 

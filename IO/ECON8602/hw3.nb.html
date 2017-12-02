@@ -175,7 +175,7 @@ $(document).ready(function () {
 <p>In this homework, we are asked to replicate the results of “A study of cartel stability: the Joint Executive Committee” paper by R. H. Porter (1983, The Bell Journal of Economics).</p>
 <p>We use the <a href="https://ocw.mit.edu/courses/economics/14-271-industrial-organization-i-fall-2013/assignments/Porter.prn"> dataset </a> provided by Prof. Glenn Ellison.</p>
 <p>I will use <b>R</b> for this homework.</p>
-<p>Let’s start.</p>
+<p>So, let’s get started.</p>
 <p>Step 0: I’ll import the necessary R packages that I’ll use later.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
@@ -272,8 +272,52 @@ $ seas13    &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 <!-- rnb-text-begin -->
 <p>To start with, let’s do a simple OLS regression of <code>log(quantity)</code> on a constant, <code>log(price)</code>, <code>lakes</code>, and all the seasonal dummies (except one, since we have already included a constant. I’ll exclude the first one).</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2Vhc19kdW1zIDwtIHBhc3RlKFwic2Vhc1wiLDI6MTMsIHNlcD1cIlwiKVxuZm1sYV9vbHMgPC0gYXMuZm9ybXVsYShwYXN0ZShcImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyBcIiwgcGFzdGUoc2Vhc19kdW1zLCBjb2xsYXBzZT0gXCIrXCIpKSlcbm9sc21vZGVsIDwtIGxtKGZtbGFfb2xzLCBkYXRhID0gZGF0YSlcbnN1bW1hcnkob2xzbW9kZWwpXG5gYGAifQ== -->
+<pre class="r"><code>seas_dums &lt;- paste(&quot;seas&quot;,2:13, sep=&quot;&quot;)
+fmla_ols &lt;- as.formula(paste(&quot;log(quantity) ~ log(price) + lakes + &quot;, paste(seas_dums, collapse= &quot;+&quot;)))
+olsmodel &lt;- lm(fmla_ols, data = data)
+summary(olsmodel)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5DYWxsOlxubG0oZm9ybXVsYSA9IGZtbGFfb2xzLCBkYXRhID0gZGF0YSlcblxuUmVzaWR1YWxzOlxuICAgICBNaW4gICAgICAgMVEgICBNZWRpYW4gICAgICAgM1EgICAgICBNYXggXG4tMS4zOTEwMiAtMC4yNDI5NiAgMC4wNjU3NSAgMC4yODI4NCAgMS4wNTg4NCBcblxuQ29lZmZpY2llbnRzOlxuICAgICAgICAgICAgRXN0aW1hdGUgU3RkLiBFcnJvciB0IHZhbHVlIFByKD58dHwpICAgIFxuKEludGVyY2VwdCkgIDkuMTc2MTcgICAgMC4xMzUxOCAgNjcuODg0ICA8IDJlLTE2ICoqKlxubG9nKHByaWNlKSAgLTAuNjM4ODggICAgMC4wODIzOSAgLTcuNzU1IDEuMjZlLTEzICoqKlxubGFrZXMgICAgICAgLTAuNDQ3NzYgICAgMC4xMTk2MCAgLTMuNzQ0IDAuMDAwMjE2ICoqKlxuc2VhczIgICAgICAgIDAuMTk5NzEgICAgMC4xMDY0OCAgIDEuODc2IDAuMDYxNjQ0IC4gIFxuc2VhczMgICAgICAgIDAuMjQ0MjYgICAgMC4xMDY0OSAgIDIuMjk0IDAuMDIyNDY4ICogIFxuc2VhczQgICAgICAgIDAuMjg4MjQgICAgMC4xMDc1NSAgIDIuNjgwIDAuMDA3NzQ4ICoqIFxuc2VhczUgICAgICAgIDAuMjQyNDggICAgMC4xMzEzMSAgIDEuODQ3IDAuMDY1NzM2IC4gIFxuc2VhczYgICAgICAgIDAuMTc5NjYgICAgMC4xNjM4MCAgIDEuMDk3IDAuMjczNTYyICAgIFxuc2VhczcgICAgICAgIDAuMjU1MzggICAgMC4xNjQyNCAgIDEuNTU1IDAuMTIwOTkxICAgIFxuc2VhczggICAgICAgLTAuMTAyMTggICAgMC4xNjQwNiAgLTAuNjIzIDAuNTMzODM2ICAgIFxuc2VhczkgICAgICAgIDAuMTM2MzggICAgMC4xNjQyMiAgIDAuODMwIDAuNDA2OTAzICAgIFxuc2VhczEwICAgICAgIDAuMzAyMDcgICAgMC4xNjU1MCAgIDEuODI1IDAuMDY4OTE5IC4gIFxuc2VhczExICAgICAgIDAuMzQ4MDEgICAgMC4xNjQzMCAgIDIuMTE4IDAuMDM0OTUyICogIFxuc2VhczEyICAgICAgIDAuMzUyNDYgICAgMC4xNjMzMyAgIDIuMTU4IDAuMDMxNjk0ICogIFxuc2VhczEzICAgICAgIDAuMTMyODIgICAgMC4xMTA5NiAgIDEuMTk3IDAuMjMyMTk3ICAgIFxuLS0tXG5TaWduaWYuIGNvZGVzOiAgMCDigJgqKirigJkgMC4wMDEg4oCYKirigJkgMC4wMSDigJgq4oCZIDAuMDUg4oCYLuKAmSAwLjEg4oCYIOKAmSAxXG5cblJlc2lkdWFsIHN0YW5kYXJkIGVycm9yOiAwLjM5NzMgb24gMzEzIGRlZ3JlZXMgb2YgZnJlZWRvbVxuTXVsdGlwbGUgUi1zcXVhcmVkOiAgMC4zMTI2LFx0QWRqdXN0ZWQgUi1zcXVhcmVkOiAgMC4yODE5IFxuRi1zdGF0aXN0aWM6IDEwLjE3IG9uIDE0IGFuZCAzMTMgREYsICBwLXZhbHVlOiA8IDIuMmUtMTZcbiJ9 -->
+<pre><code>
+Call:
+lm(formula = fmla_ols, data = data)
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSFcgMyAoUmVwbGljYXRpb24gb2YgUG9ydGVyIDE5ODMpIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgpJbiB0aGlzIGhvbWV3b3JrLCB3ZSBhcmUgYXNrZWQgdG8gcmVwbGljYXRlIHRoZSByZXN1bHRzIG9mICJBIHN0dWR5IG9mIGNhcnRlbCBzdGFiaWxpdHk6IHRoZSBKb2ludCBFeGVjdXRpdmUgQ29tbWl0dGVlIiBwYXBlciBieSBSLiBILiBQb3J0ZXIgKDE5ODMsIFRoZSBCZWxsIEpvdXJuYWwgb2YgRWNvbm9taWNzKS4KCldlIHVzZSB0aGUgPGEgaHJlZj0iaHR0cHM6Ly9vY3cubWl0LmVkdS9jb3Vyc2VzL2Vjb25vbWljcy8xNC0yNzEtaW5kdXN0cmlhbC1vcmdhbml6YXRpb24taS1mYWxsLTIwMTMvYXNzaWdubWVudHMvUG9ydGVyLnBybiI+IGRhdGFzZXQgPC9hPiBwcm92aWRlZCBieSBQcm9mLiBHbGVubiBFbGxpc29uLgoKSSB3aWxsIHVzZSA8Yj5SPC9iPiBmb3IgdGhpcyBob21ld29yay4KCkxldCdzIHN0YXJ0LgoKU3RlcCAwOiBJJ2xsIGltcG9ydCB0aGUgbmVjZXNzYXJ5IFIgcGFja2FnZXMgdGhhdCBJJ2xsIHVzZSBsYXRlci4KCmBgYHtyIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KEFFUikKbGlicmFyeShzdGF0cykKYGBgCjxicj48L2JyPgoKU3RlcCAxOiBJIGltcG9ydCB0aGUgZGF0YXNldCBpbnRvIFIsIGFuZCBuYW1lIHRoZSBjb2x1bW5zLgpgYGB7cn0KZGF0YSA8LSByZWFkLnRhYmxlKCJodHRwczovL29jdy5taXQuZWR1L2NvdXJzZXMvZWNvbm9taWNzLzE0LTI3MS1pbmR1c3RyaWFsLW9yZ2FuaXphdGlvbi1pLWZhbGwtMjAxMy9hc3NpZ25tZW50cy9Qb3J0ZXIucHJuIiwgaGVhZGVyID0gVFJVRSkKCmBgYAo8YnI+PC9icj4KCkxldCdzIGZpcnN0IHNlZSBob3cgdGhlIGRhdGEgbG9va3MuCmBgYHtyfQpnbGltcHNlKGRhdGEpCnN1bW1hcnkoZGF0YSkKYGBgCgpUbyBzdGFydCB3aXRoLCBsZXQncyBkbyBhIHNpbXBsZSBPTFMgcmVncmVzc2lvbiBvZiBgYGAgbG9nKHF1YW50aXR5KWBgYCBvbiBhIGNvbnN0YW50LCBgYGAKbG9nKHByaWNlKWBgYCwgYGBgbGFrZXNgYGAsIGFuZCBhbGwgdGhlIHNlYXNvbmFsIGR1bW1pZXMgKGV4Y2VwdCBvbmUsIHNpbmNlIHdlIGhhdmUgYWxyZWFkeSBpbmNsdWRlZCBhIGNvbnN0YW50LiBJJ2xsIGV4Y2x1ZGUgdGhlIGZpcnN0IG9uZSkuIAoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg==</div>
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.39102 -0.24296  0.06575  0.28284  1.05884 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  9.17617    0.13518  67.884  &lt; 2e-16 ***
+log(price)  -0.63888    0.08239  -7.755 1.26e-13 ***
+lakes       -0.44776    0.11960  -3.744 0.000216 ***
+seas2        0.19971    0.10648   1.876 0.061644 .  
+seas3        0.24426    0.10649   2.294 0.022468 *  
+seas4        0.28824    0.10755   2.680 0.007748 ** 
+seas5        0.24248    0.13131   1.847 0.065736 .  
+seas6        0.17966    0.16380   1.097 0.273562    
+seas7        0.25538    0.16424   1.555 0.120991    
+seas8       -0.10218    0.16406  -0.623 0.533836    
+seas9        0.13638    0.16422   0.830 0.406903    
+seas10       0.30207    0.16550   1.825 0.068919 .  
+seas11       0.34801    0.16430   2.118 0.034952 *  
+seas12       0.35246    0.16333   2.158 0.031694 *  
+seas13       0.13282    0.11096   1.197 0.232197    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.3973 on 313 degrees of freedom
+Multiple R-squared:  0.3126,    Adjusted R-squared:  0.2819 
+F-statistic: 10.17 on 14 and 313 DF,  p-value: &lt; 2.2e-16</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>In this (naive) OLS regression, the coefficient for <code>log(price)</code>, which we can call “price elasticity”, is -0.6388841. Note that it is less than 1 in absolute terms. It implies negative marginal revenues. Why? Check <a href="https://en.wikipedia.org/wiki/Marginal_revenue#Relationship_between_marginal_revenue_and_elasticity">this</a>. Hence, is not consistent with per-period profit maximization. Why? For profit maximization, the marginal cost should be equal to the marginal revenue. Since the marginal cost is positive, and the marginal revenue is negative, they cannot be equal. Therefore, the estimate we get for the elasticity is not reasonable.</p>
+<!-- rnb-text-end -->
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSFcgMyAoUmVwbGljYXRpb24gb2YgUG9ydGVyIDE5ODMpIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgpJbiB0aGlzIGhvbWV3b3JrLCB3ZSBhcmUgYXNrZWQgdG8gcmVwbGljYXRlIHRoZSByZXN1bHRzIG9mICJBIHN0dWR5IG9mIGNhcnRlbCBzdGFiaWxpdHk6IHRoZSBKb2ludCBFeGVjdXRpdmUgQ29tbWl0dGVlIiBwYXBlciBieSBSLiBILiBQb3J0ZXIgKDE5ODMsIFRoZSBCZWxsIEpvdXJuYWwgb2YgRWNvbm9taWNzKS4KCldlIHVzZSB0aGUgPGEgaHJlZj0iaHR0cHM6Ly9vY3cubWl0LmVkdS9jb3Vyc2VzL2Vjb25vbWljcy8xNC0yNzEtaW5kdXN0cmlhbC1vcmdhbml6YXRpb24taS1mYWxsLTIwMTMvYXNzaWdubWVudHMvUG9ydGVyLnBybiI+IGRhdGFzZXQgPC9hPiBwcm92aWRlZCBieSBQcm9mLiBHbGVubiBFbGxpc29uLgoKSSB3aWxsIHVzZSA8Yj5SPC9iPiBmb3IgdGhpcyBob21ld29yay4KClNvLCBsZXQncyBnZXQgc3RhcnRlZC4gCgpTdGVwIDA6IEknbGwgaW1wb3J0IHRoZSBuZWNlc3NhcnkgUiBwYWNrYWdlcyB0aGF0IEknbGwgdXNlIGxhdGVyLgoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoQUVSKQpsaWJyYXJ5KHN0YXRzKQpgYGAKPGJyPjwvYnI+CgpTdGVwIDE6IEkgaW1wb3J0IHRoZSBkYXRhc2V0IGludG8gUiwgYW5kIG5hbWUgdGhlIGNvbHVtbnMuCmBgYHtyfQpkYXRhIDwtIHJlYWQudGFibGUoImh0dHBzOi8vb2N3Lm1pdC5lZHUvY291cnNlcy9lY29ub21pY3MvMTQtMjcxLWluZHVzdHJpYWwtb3JnYW5pemF0aW9uLWktZmFsbC0yMDEzL2Fzc2lnbm1lbnRzL1BvcnRlci5wcm4iLCBoZWFkZXIgPSBUUlVFKQoKYGBgCjxicj48L2JyPgoKTGV0J3MgZmlyc3Qgc2VlIGhvdyB0aGUgZGF0YSBsb29rcy4KYGBge3J9CmdsaW1wc2UoZGF0YSkKc3VtbWFyeShkYXRhKQpgYGAKClRvIHN0YXJ0IHdpdGgsIGxldCdzIGRvIGEgc2ltcGxlIE9MUyByZWdyZXNzaW9uIG9mIGBgYCBsb2cocXVhbnRpdHkpYGBgIG9uIGEgY29uc3RhbnQsIGBgYApsb2cocHJpY2UpYGBgLCBgYGBsYWtlc2BgYCwgYW5kIGFsbCB0aGUgc2Vhc29uYWwgZHVtbWllcyAoZXhjZXB0IG9uZSwgc2luY2Ugd2UgaGF2ZSBhbHJlYWR5IGluY2x1ZGVkIGEgY29uc3RhbnQuIEknbGwgZXhjbHVkZSB0aGUgZmlyc3Qgb25lKS4gCgpgYGB7cn0Kc2Vhc19kdW1zIDwtIHBhc3RlKCJzZWFzIiwyOjEzLCBzZXA9IiIpCmZtbGFfb2xzIDwtIGFzLmZvcm11bGEocGFzdGUoImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyAiLCBwYXN0ZShzZWFzX2R1bXMsIGNvbGxhcHNlPSAiKyIpKSkKb2xzbW9kZWwgPC0gbG0oZm1sYV9vbHMsIGRhdGEgPSBkYXRhKQpzdW1tYXJ5KG9sc21vZGVsKQpgYGAKCkluIHRoaXMgKG5haXZlKSBPTFMgcmVncmVzc2lvbiwgdGhlIGNvZWZmaWNpZW50IGZvciBgbG9nKHByaWNlKWAsIHdoaWNoIHdlIGNhbiBjYWxsICJwcmljZSBlbGFzdGljaXR5IiwgaXMgYHIgY29lZmZpY2llbnRzKG9sc21vZGVsKVsibG9nKHByaWNlKSJdYC4gTm90ZSB0aGF0IGl0IGlzIGxlc3MgdGhhbiAxIGluIGFic29sdXRlIHRlcm1zLiBJdCBpbXBsaWVzIG5lZ2F0aXZlIG1hcmdpbmFsIHJldmVudWVzLiBXaHk/IENoZWNrIDxhIGhyZWY9Imh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL01hcmdpbmFsX3JldmVudWUjUmVsYXRpb25zaGlwX2JldHdlZW5fbWFyZ2luYWxfcmV2ZW51ZV9hbmRfZWxhc3RpY2l0eSI+dGhpczwvYT4uIEhlbmNlLCBpcyBub3QgY29uc2lzdGVudCB3aXRoIHBlci1wZXJpb2QgcHJvZml0IG1heGltaXphdGlvbi4gV2h5PyBGb3IgcHJvZml0IG1heGltaXphdGlvbiwgdGhlIG1hcmdpbmFsIGNvc3Qgc2hvdWxkIGJlIGVxdWFsIHRvIHRoZSBtYXJnaW5hbCByZXZlbnVlLiBTaW5jZSB0aGUgbWFyZ2luYWwgY29zdCBpcyBwb3NpdGl2ZSwgYW5kIHRoZSBtYXJnaW5hbCByZXZlbnVlIGlzIG5lZ2F0aXZlLCB0aGV5IGNhbm5vdCBiZSBlcXVhbC4gVGhlcmVmb3JlLCB0aGUgZXN0aW1hdGUgd2UgZ2V0IGZvciB0aGUgZWxhc3RpY2l0eSBpcyBub3QgcmVhc29uYWJsZS4gCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo=</div>
 
 
 
