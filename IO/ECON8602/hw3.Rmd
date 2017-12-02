@@ -5,13 +5,71 @@ output: html_notebook
 
 In this homework, we are asked to replicate the results of "A study of cartel stability: the Joint Executive Committee" paper by R. H. Porter (1983, The Bell Journal of Economics).
 
-We use the <a href="https://ocw.mit.edu/courses/economics/14-271-industrial-organization-i-fall-2013/assignments/Porter.prn"> dataset </a> provided by Prof. Glenn Ellison. 
+We use the <a href="https://ocw.mit.edu/courses/economics/14-271-industrial-organization-i-fall-2013/assignments/Porter.prn"> dataset </a> provided by Prof. Glenn Ellison.
 
+I will use <b>R</b> for this homework.
 
+Let's start.
+
+Step 0: I'll import the necessary R packages that I'll use later.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(AER)
+library(stats)
+```
+<br></br>
+
+Step 1: I import the dataset into R, and name the columns.
 ```{r}
-plot(cars)
+data <- read.table("https://ocw.mit.edu/courses/economics/14-271-industrial-organization-i-fall-2013/assignments/Porter.prn", header = TRUE)
+
+```
+<br></br>
+
+Let's first see how the data looks.
+```{r}
+glimpse(data)
+summary(data)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+To start with, let's do a simple OLS regression of ``` log(quantity)``` on a constant, ```
+log(price)```, ```lakes```, and all the seasonal dummies (except one, since we have already included a constant. I'll exclude the first one). 
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
