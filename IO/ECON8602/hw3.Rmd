@@ -11,6 +11,8 @@ I will use <b>R</b> for this homework.
 
 So, let's get started. 
 
+<h2>Part 1: Some basics</h2>
+
 Step 0: I'll import the necessary R packages that I'll use later.
 
 ```{r message=FALSE, warning=FALSE}
@@ -100,23 +102,51 @@ print(summary(ivmodel4))
 
 ```
 
-The coefficient on `collusion` tells us that if there is a collusion between the firms, the price is `r round(100*coefficients(ivmodel4)["collusion"],3)` percent higher compared to the no-collusion case. The coefficient on `log(quantity)` implies decreasing returns to scale. Why? It implies that the marginal cost curve is upward-sloping. It happens only if the production function has decreasing returns to scale [proof omitted]. Therefore, we should pick the functional form of the production function accordingly. It implies that the cost is a convex function of the output.
+The coefficient on `collusion` tells us that if there is a collusion between the firms, the price is `r round(100*coefficients(ivmodel4)["collusion"],3)` percent higher compared to the no-collusion case. The coefficient on `log(quantity)` implies decreasing returns to scale. Why? It implies that the marginal cost curve is upward-sloping. It happens only if the production function has decreasing returns to scale [proof omitted]. Therefore, the cost of the firm is a convex function of its output.
 
 
+<h2>Part 2: Model derivation and interpretation</h2>
+
+Suppose we have a linear demand specification:
+\begin{equation}
+Q_t = \alpha_0 + \alpha_1 P_t + \alpha_2 Lakes_t + u_t
+\end{equation}
+It implies that the slope of the demand curve is $1/\alpha_1$. Therefore, the slope of the marginal revenue curve is $2/\alpha_1$. Assume that the demand curve is of the form $P = K + \frac{1}{\alpha_1} Q$. So the marginal revenue curve is of the form $P = K + \frac{2}{\alpha_1} Q$. We know that $MR=MC$ at the optimal quantity, so define $Q^*$ as $MR(Q^*) = c$. Since $MR(Q^*) = c$, $K+\frac{2}{\alpha_1} = c$. Therefore, $K = c - \frac{2}{\alpha_1}Q$. The price that the monopolist charges is $D(Q^*)$. Plugging $K$ into the demand equation, we get $P^* = c - \frac{2}{\alpha_1}Q^* + \frac{1}{\alpha_1}Q^* = c - \frac{1}{\alpha_1}Q^*$.
 
 
+All of the calculations above assumed that the firm is a monopolist. Therefore, we should control for that in constructing a supply equation. Other structural factors also play role in the problem. Therefore, we can construct the supply equation as 
+
+\begin{equation}
+P_t = \beta_0 + \beta_1 Q_t + \beta_2 S_t + \beta_3 I_t + v_t
+\end{equation}
 
 
+If the industry is composed of competitive firms with total cost $c(Q_t) = c_0 Q_t + c_1 Q_t^2$, then $MC = P$ implies the pricing rule $P_t = c_0 + 2c_1 Q_t$. 
 
+<h2> Part 3: Causes of Price Wars </h2>
 
+Now, let's go back to the data and try to find the causes of price wars by using a probit regression. 
 
+First, we create a new variable that indicates the start of a price war, conditional on the previous period being collusive. Then, we use `quantity`, `lakes`, `dm1,dm2,dm3` and `dm4` as the explatanory variables, and estimate the likelihood of a start of a price war by using a probit regression.
 
+```{r}
+depvar <- c()
+for(i in 2:nrow(data)){
+  if(data$collusion[i-1]==1){
+    depvar[i] <- abs(data$collusion[i]-1)
+  }
+  else
+    depvar[i] <- NA
+}
 
+fmla_probit <-  as.formula(paste("depvar ~ quantity + lakes + ", paste(dm_dums, collapse= "+")))
+probitmodel <- glm(fmla_probit, family = binomial(link = "probit"), data = data)
 
+summary(probitmodel)
 
+```
 
-
-
+The coefficient on `quantity` implies that as the quantity increases, the probability of a price war increases, i.e. price wars are more likely to occur in booms. Additionally, the coefficient on `lakes` implies that price wars are less likely if the lakes are open to navigation. However, none of these coefficients are significantly different than zero.
 
 
 
