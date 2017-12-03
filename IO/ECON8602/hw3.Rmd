@@ -90,15 +90,13 @@ The results for the new estimation are above. It turns out that adding extra ins
 
 
 Step 3: Now, let's estimate the supply equation instead. 
-\begin{equation}
- \beta = \frac{\alpha}{\beta}
-\end{equation}
-
 
 ```{r}
 fmla_iv4 <- as.formula(paste("log(price) ~ log(quantity) + collusion + ", paste(dm_dums, collapse= "+"),paste("+"),paste(seas_dums,collapse="+"),paste("| lakes + collusion + "),paste(dm_dums, collapse= "+"),paste("+"),paste(seas_dums,collapse ="+")))
 ivmodel4 <- ivreg(fmla_iv4,data=data)
+print(fmla_iv4)
 print(summary(ivmodel4))
+
 
 ```
 
