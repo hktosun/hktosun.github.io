@@ -270,16 +270,16 @@ $ seas13    &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>To start with, let’s do a simple OLS regression of <code>log(quantity)</code> on a constant, <code>log(price)</code>, <code>lakes</code>, and all the seasonal dummies (except one, since we have already included a constant. I’ll exclude the first one).</p>
+<p>To start with, let’s do a simple OLS regression of <code>log(quantity)</code> on a constant, <code>log(price)</code>, <code>lakes</code>, and all the seasonal dummies (except one, since we have already included a constant. I’ll exclude one).</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2Vhc19kdW1zIDwtIHBhc3RlKFwic2Vhc1wiLDI6MTMsIHNlcD1cIlwiKVxuZm1sYV9vbHMgPC0gYXMuZm9ybXVsYShwYXN0ZShcImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyBcIiwgcGFzdGUoc2Vhc19kdW1zLCBjb2xsYXBzZT0gXCIrXCIpKSlcbm9sc21vZGVsIDwtIGxtKGZtbGFfb2xzLCBkYXRhID0gZGF0YSlcbnN1bW1hcnkob2xzbW9kZWwpXG5gYGAifQ== -->
-<pre class="r"><code>seas_dums &lt;- paste(&quot;seas&quot;,2:13, sep=&quot;&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2Vhc19kdW1zIDwtIHBhc3RlKFwic2Vhc1wiLDE6MTIsIHNlcD1cIlwiKVxuZm1sYV9vbHMgPC0gYXMuZm9ybXVsYShwYXN0ZShcImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyBcIiwgcGFzdGUoc2Vhc19kdW1zLCBjb2xsYXBzZT0gXCIrXCIpKSlcbm9sc21vZGVsIDwtIGxtKGZtbGFfb2xzLCBkYXRhID0gZGF0YSlcbnN1bW1hcnkob2xzbW9kZWwpXG5gYGAifQ== -->
+<pre class="r"><code>seas_dums &lt;- paste(&quot;seas&quot;,1:12, sep=&quot;&quot;)
 fmla_ols &lt;- as.formula(paste(&quot;log(quantity) ~ log(price) + lakes + &quot;, paste(seas_dums, collapse= &quot;+&quot;)))
 olsmodel &lt;- lm(fmla_ols, data = data)
 summary(olsmodel)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5DYWxsOlxubG0oZm9ybXVsYSA9IGZtbGFfb2xzLCBkYXRhID0gZGF0YSlcblxuUmVzaWR1YWxzOlxuICAgICBNaW4gICAgICAgMVEgICBNZWRpYW4gICAgICAgM1EgICAgICBNYXggXG4tMS4zOTEwMiAtMC4yNDI5NiAgMC4wNjU3NSAgMC4yODI4NCAgMS4wNTg4NCBcblxuQ29lZmZpY2llbnRzOlxuICAgICAgICAgICAgRXN0aW1hdGUgU3RkLiBFcnJvciB0IHZhbHVlIFByKD58dHwpICAgIFxuKEludGVyY2VwdCkgIDkuMTc2MTcgICAgMC4xMzUxOCAgNjcuODg0ICA8IDJlLTE2ICoqKlxubG9nKHByaWNlKSAgLTAuNjM4ODggICAgMC4wODIzOSAgLTcuNzU1IDEuMjZlLTEzICoqKlxubGFrZXMgICAgICAgLTAuNDQ3NzYgICAgMC4xMTk2MCAgLTMuNzQ0IDAuMDAwMjE2ICoqKlxuc2VhczIgICAgICAgIDAuMTk5NzEgICAgMC4xMDY0OCAgIDEuODc2IDAuMDYxNjQ0IC4gIFxuc2VhczMgICAgICAgIDAuMjQ0MjYgICAgMC4xMDY0OSAgIDIuMjk0IDAuMDIyNDY4ICogIFxuc2VhczQgICAgICAgIDAuMjg4MjQgICAgMC4xMDc1NSAgIDIuNjgwIDAuMDA3NzQ4ICoqIFxuc2VhczUgICAgICAgIDAuMjQyNDggICAgMC4xMzEzMSAgIDEuODQ3IDAuMDY1NzM2IC4gIFxuc2VhczYgICAgICAgIDAuMTc5NjYgICAgMC4xNjM4MCAgIDEuMDk3IDAuMjczNTYyICAgIFxuc2VhczcgICAgICAgIDAuMjU1MzggICAgMC4xNjQyNCAgIDEuNTU1IDAuMTIwOTkxICAgIFxuc2VhczggICAgICAgLTAuMTAyMTggICAgMC4xNjQwNiAgLTAuNjIzIDAuNTMzODM2ICAgIFxuc2VhczkgICAgICAgIDAuMTM2MzggICAgMC4xNjQyMiAgIDAuODMwIDAuNDA2OTAzICAgIFxuc2VhczEwICAgICAgIDAuMzAyMDcgICAgMC4xNjU1MCAgIDEuODI1IDAuMDY4OTE5IC4gIFxuc2VhczExICAgICAgIDAuMzQ4MDEgICAgMC4xNjQzMCAgIDIuMTE4IDAuMDM0OTUyICogIFxuc2VhczEyICAgICAgIDAuMzUyNDYgICAgMC4xNjMzMyAgIDIuMTU4IDAuMDMxNjk0ICogIFxuc2VhczEzICAgICAgIDAuMTMyODIgICAgMC4xMTA5NiAgIDEuMTk3IDAuMjMyMTk3ICAgIFxuLS0tXG5TaWduaWYuIGNvZGVzOiAgMCDigJgqKirigJkgMC4wMDEg4oCYKirigJkgMC4wMSDigJgq4oCZIDAuMDUg4oCYLuKAmSAwLjEg4oCYIOKAmSAxXG5cblJlc2lkdWFsIHN0YW5kYXJkIGVycm9yOiAwLjM5NzMgb24gMzEzIGRlZ3JlZXMgb2YgZnJlZWRvbVxuTXVsdGlwbGUgUi1zcXVhcmVkOiAgMC4zMTI2LFx0QWRqdXN0ZWQgUi1zcXVhcmVkOiAgMC4yODE5IFxuRi1zdGF0aXN0aWM6IDEwLjE3IG9uIDE0IGFuZCAzMTMgREYsICBwLXZhbHVlOiA8IDIuMmUtMTZcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5DYWxsOlxubG0oZm9ybXVsYSA9IGZtbGFfb2xzLCBkYXRhID0gZGF0YSlcblxuUmVzaWR1YWxzOlxuICAgICBNaW4gICAgICAgMVEgICBNZWRpYW4gICAgICAgM1EgICAgICBNYXggXG4tMS4zOTEwMiAtMC4yNDI5NiAgMC4wNjU3NSAgMC4yODI4NCAgMS4wNTg4NCBcblxuQ29lZmZpY2llbnRzOlxuICAgICAgICAgICAgIEVzdGltYXRlIFN0ZC4gRXJyb3IgdCB2YWx1ZSBQcig+fHR8KSAgICBcbihJbnRlcmNlcHQpICA5LjMwODk4OCAgIDAuMTM5NTA0ICA2Ni43MjkgIDwgMmUtMTYgKioqXG5sb2cocHJpY2UpICAtMC42Mzg4ODQgICAwLjA4MjM4OSAgLTcuNzU1IDEuMjZlLTEzICoqKlxubGFrZXMgICAgICAgLTAuNDQ3NzU1ICAgMC4xMTk2MDQgIC0zLjc0NCAwLjAwMDIxNiAqKipcbnNlYXMxICAgICAgIC0wLjEzMjgyMiAgIDAuMTEwOTU5ICAtMS4xOTcgMC4yMzIxOTcgICAgXG5zZWFzMiAgICAgICAgMC4wNjY4ODggICAwLjExMTI5OCAgIDAuNjAxIDAuNTQ4Mjg3ICAgIFxuc2VhczMgICAgICAgIDAuMTExNDM2ICAgMC4xMTEzMDggICAxLjAwMSAwLjMxNzUyOCAgICBcbnNlYXM0ICAgICAgICAwLjE1NTQyMiAgIDAuMTEwNzQzICAgMS40MDMgMC4xNjE0NzUgICAgXG5zZWFzNSAgICAgICAgMC4xMDk2NjEgICAwLjEyOTkxOCAgIDAuODQ0IDAuMzk5MjczICAgIFxuc2VhczYgICAgICAgIDAuMDQ2ODM0ICAgMC4xNTk1OTYgICAwLjI5MyAwLjc2OTM2OSAgICBcbnNlYXM3ICAgICAgICAwLjEyMjU1NCAgIDAuMTYwMDQxICAgMC43NjYgMC40NDQzOTEgICAgXG5zZWFzOCAgICAgICAtMC4yMzUwMDYgICAwLjE1OTg1NiAgLTEuNDcwIDAuMTQyNTM2ICAgIFxuc2VhczkgICAgICAgIDAuMDAzNTYyICAgMC4xNjAwMjEgICAwLjAyMiAwLjk4MjI1MyAgICBcbnNlYXMxMCAgICAgICAwLjE2OTI0OSAgIDAuMTYxMjk1ICAgMS4wNDkgMC4yOTQ4NDQgICAgXG5zZWFzMTEgICAgICAgMC4yMTUxODYgICAwLjE2MDA5NiAgIDEuMzQ0IDAuMTc5ODg3ICAgIFxuc2VhczEyICAgICAgIDAuMjE5NjM1ICAgMC4xNTkxMzYgICAxLjM4MCAwLjE2ODUyMCAgICBcbi0tLVxuU2lnbmlmLiBjb2RlczogIDAg4oCYKioq4oCZIDAuMDAxIOKAmCoq4oCZIDAuMDEg4oCYKuKAmSAwLjA1IOKAmC7igJkgMC4xIOKAmCDigJkgMVxuXG5SZXNpZHVhbCBzdGFuZGFyZCBlcnJvcjogMC4zOTczIG9uIDMxMyBkZWdyZWVzIG9mIGZyZWVkb21cbk11bHRpcGxlIFItc3F1YXJlZDogIDAuMzEyNixcdEFkanVzdGVkIFItc3F1YXJlZDogIDAuMjgxOSBcbkYtc3RhdGlzdGljOiAxMC4xNyBvbiAxNCBhbmQgMzEzIERGLCAgcC12YWx1ZTogPCAyLjJlLTE2XG4ifQ== -->
 <pre><code>
 Call:
 lm(formula = fmla_ols, data = data)
@@ -289,22 +289,22 @@ Residuals:
 -1.39102 -0.24296  0.06575  0.28284  1.05884 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  9.17617    0.13518  67.884  &lt; 2e-16 ***
-log(price)  -0.63888    0.08239  -7.755 1.26e-13 ***
-lakes       -0.44776    0.11960  -3.744 0.000216 ***
-seas2        0.19971    0.10648   1.876 0.061644 .  
-seas3        0.24426    0.10649   2.294 0.022468 *  
-seas4        0.28824    0.10755   2.680 0.007748 ** 
-seas5        0.24248    0.13131   1.847 0.065736 .  
-seas6        0.17966    0.16380   1.097 0.273562    
-seas7        0.25538    0.16424   1.555 0.120991    
-seas8       -0.10218    0.16406  -0.623 0.533836    
-seas9        0.13638    0.16422   0.830 0.406903    
-seas10       0.30207    0.16550   1.825 0.068919 .  
-seas11       0.34801    0.16430   2.118 0.034952 *  
-seas12       0.35246    0.16333   2.158 0.031694 *  
-seas13       0.13282    0.11096   1.197 0.232197    
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  9.308988   0.139504  66.729  &lt; 2e-16 ***
+log(price)  -0.638884   0.082389  -7.755 1.26e-13 ***
+lakes       -0.447755   0.119604  -3.744 0.000216 ***
+seas1       -0.132822   0.110959  -1.197 0.232197    
+seas2        0.066888   0.111298   0.601 0.548287    
+seas3        0.111436   0.111308   1.001 0.317528    
+seas4        0.155422   0.110743   1.403 0.161475    
+seas5        0.109661   0.129918   0.844 0.399273    
+seas6        0.046834   0.159596   0.293 0.769369    
+seas7        0.122554   0.160041   0.766 0.444391    
+seas8       -0.235006   0.159856  -1.470 0.142536    
+seas9        0.003562   0.160021   0.022 0.982253    
+seas10       0.169249   0.161295   1.049 0.294844    
+seas11       0.215186   0.160096   1.344 0.179887    
+seas12       0.219635   0.159136   1.380 0.168520    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -314,10 +314,174 @@ F-statistic: 10.17 on 14 and 313 DF,  p-value: &lt; 2.2e-16</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>In this (naive) OLS regression, the coefficient for <code>log(price)</code>, which we can call “price elasticity”, is -0.6388841. Note that it is less than 1 in absolute terms. It implies negative marginal revenues. Why? Check <a href="https://en.wikipedia.org/wiki/Marginal_revenue#Relationship_between_marginal_revenue_and_elasticity">this</a>. Hence, is not consistent with per-period profit maximization. Why? For profit maximization, the marginal cost should be equal to the marginal revenue. Since the marginal cost is positive, and the marginal revenue is negative, they cannot be equal. Therefore, the estimate we get for the elasticity is not reasonable.</p>
+<p>In this (naive) OLS regression, the coefficient for <code>log(price)</code>, which we can call “price elasticity”, is -0.639. Note that it is less than 1 in absolute terms. It implies negative marginal revenues. Why? Check <a href="https://en.wikipedia.org/wiki/Marginal_revenue#Relationship_between_marginal_revenue_and_elasticity">this</a>. For per-period profit maximization, we know that the marginal cost should be equal to the marginal revenue. Since the marginal cost is positive, and the marginal revenue is negative, they cannot be equal. Therefore, the estimate we get for the elasticity is not reasonable, since it contradicts with per-period profit maximization.</p>
+<p>So, let’s try something different.</p>
+<p>Step 2: Actually we knew that the above regression wouldn’t give us the correct estimates because of the “endogeneity bias”. To overcome this problem, we use Instrumental Variable estimation.</p>
+<p>Following the instructions in the homework, I use <code>collusion</code> as an instrument for <code>price</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm1sYV9pdjEgPC0gYXMuZm9ybXVsYShwYXN0ZShcImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyBcIiwgcGFzdGUoc2Vhc19kdW1zLCBjb2xsYXBzZT0gXCIrXCIpLHBhc3RlKFwifCBjb2xsdXNpb24gKyBsYWtlcyArIFwiKSxwYXN0ZShzZWFzX2R1bXMsIGNvbGxhcHNlPSBcIitcIikpKVxuaXZtb2RlbDEgPC0gaXZyZWcoZm1sYV9pdjEsZGF0YT1kYXRhKVxucHJpbnQoZm1sYV9pdjEpXG5gYGAifQ== -->
+<pre class="r"><code>fmla_iv1 &lt;- as.formula(paste(&quot;log(quantity) ~ log(price) + lakes + &quot;, paste(seas_dums, collapse= &quot;+&quot;),paste(&quot;| collusion + lakes + &quot;),paste(seas_dums, collapse= &quot;+&quot;)))
+ivmodel1 &lt;- ivreg(fmla_iv1,data=data)
+print(fmla_iv1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoibG9nKHF1YW50aXR5KSB+IGxvZyhwcmljZSkgKyBsYWtlcyArIHNlYXMxICsgc2VhczIgKyBzZWFzMyArIFxuICAgIHNlYXM0ICsgc2VhczUgKyBzZWFzNiArIHNlYXM3ICsgc2VhczggKyBzZWFzOSArIHNlYXMxMCArIFxuICAgIHNlYXMxMSArIHNlYXMxMiB8IGNvbGx1c2lvbiArIGxha2VzICsgc2VhczEgKyBzZWFzMiArIHNlYXMzICsgXG4gICAgc2VhczQgKyBzZWFzNSArIHNlYXM2ICsgc2VhczcgKyBzZWFzOCArIHNlYXM5ICsgc2VhczEwICsgXG4gICAgc2VhczExICsgc2VhczEyXG4ifQ== -->
+<pre><code>log(quantity) ~ log(price) + lakes + seas1 + seas2 + seas3 + 
+    seas4 + seas5 + seas6 + seas7 + seas8 + seas9 + seas10 + 
+    seas11 + seas12 | collusion + lakes + seas1 + seas2 + seas3 + 
+    seas4 + seas5 + seas6 + seas7 + seas8 + seas9 + seas10 + 
+    seas11 + seas12</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShpdm1vZGVsMSlcbmBgYCJ9 -->
+<pre class="r"><code>summary(ivmodel1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5DYWxsOlxuaXZyZWcoZm9ybXVsYSA9IGZtbGFfaXYxLCBkYXRhID0gZGF0YSlcblxuUmVzaWR1YWxzOlxuICAgICBNaW4gICAgICAgMVEgICBNZWRpYW4gICAgICAgM1EgICAgICBNYXggXG4tMS4zODI5NSAtMC4yNzI3NSAgMC4wNzMxOCAgMC4yNzcwMyAgMS4wOTMyMCBcblxuQ29lZmZpY2llbnRzOlxuICAgICAgICAgICAgIEVzdGltYXRlIFN0ZC4gRXJyb3IgdCB2YWx1ZSBQcig+fHR8KSAgICBcbihJbnRlcmNlcHQpICA4Ljk5NjQ2OSAgIDAuMTk5MzAxICA0NS4xNDAgIDwgMmUtMTYgKioqXG5sb2cocHJpY2UpICAtMC44NjY1ODYgICAwLjEzMjEyMyAgLTYuNTU5IDIuMjRlLTEwICoqKlxubGFrZXMgICAgICAgLTAuNDIyOTM2ICAgMC4xMjE1NjkgIC0zLjQ3OSAwLjAwMDU3NSAqKipcbnNlYXMxICAgICAgIC0wLjEzMDk3MyAgIDAuMTEyMzA3ICAtMS4xNjYgMC4yNDQ0MjAgICAgXG5zZWFzMiAgICAgICAgMC4wOTA5NTIgICAwLjExMzE2NyAgIDAuODA0IDAuNDIyMTgzICAgIFxuc2VhczMgICAgICAgIDAuMTM1ODcyICAgMC4xMTMxOTQgICAxLjIwMCAwLjIzMDkxMyAgICBcbnNlYXM0ICAgICAgICAwLjE1MjUxMSAgIDAuMTEyMDk0ICAgMS4zNjEgMC4xNzQ2MzAgICAgXG5zZWFzNSAgICAgICAgMC4wNzM1NjQgICAwLjEzMjQ5NCAgIDAuNTU1IDAuNTc5MTM3ICAgIFxuc2VhczYgICAgICAgLTAuMDA2MDYzICAgMC4xNjMyNzcgIC0wLjAzNyAwLjk3MDQwNSAgICBcbnNlYXM3ICAgICAgICAwLjA2MDIzNCAgIDAuMTY0MzkyICAgMC4zNjYgMC43MTQzMTIgICAgXG5zZWFzOCAgICAgICAtMC4yOTM1OTggICAwLjE2MzkzMCAgLTEuNzkxIDAuMDc0MjYwIC4gIFxuc2VhczkgICAgICAgLTAuMDU4MzcxICAgMC4xNjQzNDMgIC0wLjM1NSAwLjcyMjY5NyAgICBcbnNlYXMxMCAgICAgICAwLjA4NTgxMiAgIDAuMTY3NTE0ICAgMC41MTIgMC42MDg4MjQgICAgXG5zZWFzMTEgICAgICAgMC4xNTE3OTMgICAwLjE2NDUzMCAgIDAuOTIzIDAuMzU2OTM2ICAgIFxuc2VhczEyICAgICAgIDAuMTc4NjU3ICAgMC4xNjIxMTkgICAxLjEwMiAwLjI3MTMwMiAgICBcbi0tLVxuU2lnbmlmLiBjb2RlczogIDAg4oCYKioq4oCZIDAuMDAxIOKAmCoq4oCZIDAuMDEg4oCYKuKAmSAwLjA1IOKAmC7igJkgMC4xIOKAmCDigJkgMVxuXG5SZXNpZHVhbCBzdGFuZGFyZCBlcnJvcjogMC40MDIxIG9uIDMxMyBkZWdyZWVzIG9mIGZyZWVkb21cbk11bHRpcGxlIFItU3F1YXJlZDogMC4yOTU5LFx0QWRqdXN0ZWQgUi1zcXVhcmVkOiAwLjI2NDQgXG5XYWxkIHRlc3Q6IDguODA3IG9uIDE0IGFuZCAzMTMgREYsICBwLXZhbHVlOiAzLjVlLTE2IFxuIn0= -->
+<pre><code>
+Call:
+ivreg(formula = fmla_iv1, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.38295 -0.27275  0.07318  0.27703  1.09320 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  8.996469   0.199301  45.140  &lt; 2e-16 ***
+log(price)  -0.866586   0.132123  -6.559 2.24e-10 ***
+lakes       -0.422936   0.121569  -3.479 0.000575 ***
+seas1       -0.130973   0.112307  -1.166 0.244420    
+seas2        0.090952   0.113167   0.804 0.422183    
+seas3        0.135872   0.113194   1.200 0.230913    
+seas4        0.152511   0.112094   1.361 0.174630    
+seas5        0.073564   0.132494   0.555 0.579137    
+seas6       -0.006063   0.163277  -0.037 0.970405    
+seas7        0.060234   0.164392   0.366 0.714312    
+seas8       -0.293598   0.163930  -1.791 0.074260 .  
+seas9       -0.058371   0.164343  -0.355 0.722697    
+seas10       0.085812   0.167514   0.512 0.608824    
+seas11       0.151793   0.164530   0.923 0.356936    
+seas12       0.178657   0.162119   1.102 0.271302    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4021 on 313 degrees of freedom
+Multiple R-Squared: 0.2959, Adjusted R-squared: 0.2644 
+Wald test: 8.807 on 14 and 313 DF,  p-value: 3.5e-16 </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now the results look better. Why? Look at the coefficient for <code>log(price)</code>, which is the price elasticity (of demand): it is -0.867. So the new estimate for elasticity is much closer to 1 (in absolute terms). The estimates are closer to those reported in Ellison (1994), Table 2 (the estimation of demand with no serial correlation).</p>
+<p>We can interpret the coefficient on the <code>lakes</code> variable and the seasonal dummies as follows. If the lakes are open to navigation, quantity demanded for railroad transport decreases by 42.294 percent compared to the case where the lakes are frozen. In the first season, the quantity demanded is 13.097 percent lower than season 13, ceteris paribus. In season 2, the quantity the quantity demanded is 9.095percent higher than season 13. And so on. However, all of the seasonal dummies turn out to be insignificant.</p>
+<p>The R-squared of this regression is 0.2958746.</p>
+<p>Alternatively, let’s use <code>dm1, dm2,dm3</code> and <code>dm4</code> as instruments for <code>price</code> in addition to <code>collusion</code>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZG1fZHVtcyA8LSBwYXN0ZShcImRtXCIsMTo0LCBzZXA9XCJcIilcbmZtbGFfaXYyIDwtIGFzLmZvcm11bGEocGFzdGUoXCJsb2cocXVhbnRpdHkpIH4gbG9nKHByaWNlKSArIGxha2VzICsgXCIsIHBhc3RlKHNlYXNfZHVtcywgY29sbGFwc2U9IFwiK1wiKSxwYXN0ZShcInxcIiwgcGFzdGUoZG1fZHVtcyxjb2xsYXBzZSA9IFwiK1wiKSwgXCIrIGNvbGx1c2lvbiArIGxha2VzICsgXCIpLCBwYXN0ZShzZWFzX2R1bXMsY29sbGFwc2U9XCIrXCIpKSlcbml2bW9kZWwyIDwtIGl2cmVnKGZtbGFfaXYyLGRhdGE9ZGF0YSlcbnByaW50KGZtbGFfaXYyKVxuYGBgIn0= -->
+<pre class="r"><code>dm_dums &lt;- paste(&quot;dm&quot;,1:4, sep=&quot;&quot;)
+fmla_iv2 &lt;- as.formula(paste(&quot;log(quantity) ~ log(price) + lakes + &quot;, paste(seas_dums, collapse= &quot;+&quot;),paste(&quot;|&quot;, paste(dm_dums,collapse = &quot;+&quot;), &quot;+ collusion + lakes + &quot;), paste(seas_dums,collapse=&quot;+&quot;)))
+ivmodel2 &lt;- ivreg(fmla_iv2,data=data)
+print(fmla_iv2)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoibG9nKHF1YW50aXR5KSB+IGxvZyhwcmljZSkgKyBsYWtlcyArIHNlYXMxICsgc2VhczIgKyBzZWFzMyArIFxuICAgIHNlYXM0ICsgc2VhczUgKyBzZWFzNiArIHNlYXM3ICsgc2VhczggKyBzZWFzOSArIHNlYXMxMCArIFxuICAgIHNlYXMxMSArIHNlYXMxMiB8IGRtMSArIGRtMiArIGRtMyArIGRtNCArIGNvbGx1c2lvbiArIGxha2VzICsgXG4gICAgc2VhczEgKyBzZWFzMiArIHNlYXMzICsgc2VhczQgKyBzZWFzNSArIHNlYXM2ICsgc2VhczcgKyBzZWFzOCArIFxuICAgIHNlYXM5ICsgc2VhczEwICsgc2VhczExICsgc2VhczEyXG4ifQ== -->
+<pre><code>log(quantity) ~ log(price) + lakes + seas1 + seas2 + seas3 + 
+    seas4 + seas5 + seas6 + seas7 + seas8 + seas9 + seas10 + 
+    seas11 + seas12 | dm1 + dm2 + dm3 + dm4 + collusion + lakes + 
+    seas1 + seas2 + seas3 + seas4 + seas5 + seas6 + seas7 + seas8 + 
+    seas9 + seas10 + seas11 + seas12</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShpdm1vZGVsMilcbmBgYCJ9 -->
+<pre class="r"><code>summary(ivmodel2)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5DYWxsOlxuaXZyZWcoZm9ybXVsYSA9IGZtbGFfaXYyLCBkYXRhID0gZGF0YSlcblxuUmVzaWR1YWxzOlxuICAgICBNaW4gICAgICAgMVEgICBNZWRpYW4gICAgICAgM1EgICAgICBNYXggXG4tMS4zODI4MSAtMC4yNTQwMCAgMC4wNjk4OSAgMC4yNzYxNyAgMS4wNzMzMyBcblxuQ29lZmZpY2llbnRzOlxuICAgICAgICAgICAgRXN0aW1hdGUgU3RkLiBFcnJvciB0IHZhbHVlIFByKD58dHwpICAgIFxuKEludGVyY2VwdCkgIDkuMTc3MTYgICAgMC4xODM4NSAgNDkuOTE2ICA8IDJlLTE2ICoqKlxubG9nKHByaWNlKSAgLTAuNzM0OTQgICAgMC4xMTk5NCAgLTYuMTI4IDIuNjhlLTA5ICoqKlxubGFrZXMgICAgICAgLTAuNDM3MjkgICAgMC4xMjAyNCAgLTMuNjM3IDAuMDAwMzIzICoqKlxuc2VhczEgICAgICAgLTAuMTMyMDQgICAgMC4xMTEyMCAgLTEuMTg3IDAuMjM1OTY1ICAgIFxuc2VhczIgICAgICAgIDAuMDc3MDQgICAgMC4xMTE5MiAgIDAuNjg4IDAuNDkxNzM5ICAgIFxuc2VhczMgICAgICAgIDAuMTIxNzQgICAgMC4xMTE5NCAgIDEuMDg4IDAuMjc3NjE1ICAgIFxuc2VhczQgICAgICAgIDAuMTU0MTkgICAgMC4xMTA5OSAgIDEuMzg5IDAuMTY1NzM3ICAgIFxuc2VhczUgICAgICAgIDAuMDk0NDMgICAgMC4xMzA5MyAgIDAuNzIxIDAuNDcxMjg2ICAgIFxuc2VhczYgICAgICAgIDAuMDI0NTIgICAgMC4xNjEyMSAgIDAuMTUyIDAuODc5MjA2ICAgIFxuc2VhczcgICAgICAgIDAuMDk2MjcgICAgMC4xNjIxNSAgIDAuNTk0IDAuNTUzMTQzICAgIFxuc2VhczggICAgICAgLTAuMjU5NzIgICAgMC4xNjE3NiAgLTEuNjA2IDAuMTA5MzY4ICAgIFxuc2VhczkgICAgICAgLTAuMDIyNTYgICAgMC4xNjIxMCAgLTAuMTM5IDAuODg5MzkwICAgIFxuc2VhczEwICAgICAgIDAuMTM0MDUgICAgMC4xNjQ3NiAgIDAuODE0IDAuNDE2NDczICAgIFxuc2VhczExICAgICAgIDAuMTg4NDQgICAgMC4xNjIyNiAgIDEuMTYxIDAuMjQ2Mzc3ICAgIFxuc2VhczEyICAgICAgIDAuMjAyMzUgICAgMC4xNjAyNSAgIDEuMjYzIDAuMjA3NjI4ICAgIFxuLS0tXG5TaWduaWYuIGNvZGVzOiAgMCDigJgqKirigJkgMC4wMDEg4oCYKirigJkgMC4wMSDigJgq4oCZIDAuMDUg4oCYLuKAmSAwLjEg4oCYIOKAmSAxXG5cblJlc2lkdWFsIHN0YW5kYXJkIGVycm9yOiAwLjM5ODEgb24gMzEzIGRlZ3JlZXMgb2YgZnJlZWRvbVxuTXVsdGlwbGUgUi1TcXVhcmVkOiAwLjMwOTcsXHRBZGp1c3RlZCBSLXNxdWFyZWQ6IDAuMjc4OCBcbldhbGQgdGVzdDogOC41MzEgb24gMTQgYW5kIDMxMyBERiwgIHAtdmFsdWU6IDEuMjMzZS0xNSBcbiJ9 -->
+<pre><code>
+Call:
+ivreg(formula = fmla_iv2, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.38281 -0.25400  0.06989  0.27617  1.07333 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  9.17716    0.18385  49.916  &lt; 2e-16 ***
+log(price)  -0.73494    0.11994  -6.128 2.68e-09 ***
+lakes       -0.43729    0.12024  -3.637 0.000323 ***
+seas1       -0.13204    0.11120  -1.187 0.235965    
+seas2        0.07704    0.11192   0.688 0.491739    
+seas3        0.12174    0.11194   1.088 0.277615    
+seas4        0.15419    0.11099   1.389 0.165737    
+seas5        0.09443    0.13093   0.721 0.471286    
+seas6        0.02452    0.16121   0.152 0.879206    
+seas7        0.09627    0.16215   0.594 0.553143    
+seas8       -0.25972    0.16176  -1.606 0.109368    
+seas9       -0.02256    0.16210  -0.139 0.889390    
+seas10       0.13405    0.16476   0.814 0.416473    
+seas11       0.18844    0.16226   1.161 0.246377    
+seas12       0.20235    0.16025   1.263 0.207628    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.3981 on 313 degrees of freedom
+Multiple R-Squared: 0.3097, Adjusted R-squared: 0.2788 
+Wald test: 8.531 on 14 and 313 DF,  p-value: 1.233e-15 </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The results for the new estimation are above. It turns out that adding extra instruments doesn’t improve the estimates; the estimate for elasticity was closer to -1 in the previous regression.</p>
+Step 3: Now, let’s estimate the supply equation instead.
+<span class="math display">\[\begin{equation}
+ \beta = \frac{\alpha}{\beta}
+\end{equation}\]</span>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm1sYV9pdjQgPC0gYXMuZm9ybXVsYShwYXN0ZShcImxvZyhwcmljZSkgfiBsb2cocXVhbnRpdHkpICsgY29sbHVzaW9uICsgXCIsIHBhc3RlKGRtX2R1bXMsIGNvbGxhcHNlPSBcIitcIikscGFzdGUoXCIrXCIpLHBhc3RlKHNlYXNfZHVtcyxjb2xsYXBzZT1cIitcIikscGFzdGUoXCJ8IGxha2VzICsgY29sbHVzaW9uICsgXCIpLHBhc3RlKGRtX2R1bXMsIGNvbGxhcHNlPSBcIitcIikscGFzdGUoXCIrXCIpLHBhc3RlKHNlYXNfZHVtcyxjb2xsYXBzZSA9XCIrXCIpKSlcbml2bW9kZWw0IDwtIGl2cmVnKGZtbGFfaXY0LGRhdGE9ZGF0YSlcbnByaW50KHN1bW1hcnkoaXZtb2RlbDQpKVxuYGBgIn0= -->
+<pre class="r"><code>fmla_iv4 &lt;- as.formula(paste(&quot;log(price) ~ log(quantity) + collusion + &quot;, paste(dm_dums, collapse= &quot;+&quot;),paste(&quot;+&quot;),paste(seas_dums,collapse=&quot;+&quot;),paste(&quot;| lakes + collusion + &quot;),paste(dm_dums, collapse= &quot;+&quot;),paste(&quot;+&quot;),paste(seas_dums,collapse =&quot;+&quot;)))
+ivmodel4 &lt;- ivreg(fmla_iv4,data=data)
+print(summary(ivmodel4))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5DYWxsOlxuaXZyZWcoZm9ybXVsYSA9IGZtbGFfaXY0LCBkYXRhID0gZGF0YSlcblxuUmVzaWR1YWxzOlxuICAgICBNaW4gICAgICAgMVEgICBNZWRpYW4gICAgICAgM1EgICAgICBNYXggXG4tMC42MjU4MCAtMC4xNTk2OCAgMC4wMjA3NiAgMC4xNDA4NSAgMC42MDIxOCBcblxuQ29lZmZpY2llbnRzOlxuICAgICAgICAgICAgICAgIEVzdGltYXRlIFN0ZC4gRXJyb3IgdCB2YWx1ZSBQcig+fHR8KSAgICBcbihJbnRlcmNlcHQpICAgLTMuOTc1MDQ4MyAgMS43NzgxMjM3ICAtMi4yMzYgMC4wMjYwOTcgKiAgXG5sb2cocXVhbnRpdHkpICAwLjI1MjkwODYgIDAuMTczMDM5MyAgIDEuNDYyIDAuMTQ0ODc2ICAgIFxuY29sbHVzaW9uICAgICAgMC4zNjgxMDgxICAwLjA1Mzg0NzYgICA2LjgzNiA0LjM1ZS0xMSAqKipcbmRtMSAgICAgICAgICAgLTAuMjAxOTEzNCAgMC4wNTUyOTcyICAtMy42NTEgMC4wMDAzMDYgKioqXG5kbTIgICAgICAgICAgIC0wLjE3MjY2NzAgIDAuMDgwNTkwMCAgLTIuMTQzIDAuMDMyOTMxICogIFxuZG0zICAgICAgICAgICAtMC4zMTg2ODYxICAwLjA2NDcxNDcgIC00LjkyNCAxLjM4ZS0wNiAqKipcbmRtNCAgICAgICAgICAgLTAuMjA4MTgwNiAgMC4xNzIxODc2ICAtMS4yMDkgMC4yMjc1NzQgICAgXG5zZWFzMSAgICAgICAgICAwLjAyOTY3MTEgIDAuMDcxNzUwOSAgIDAuNDE0IDAuNjc5NTA1ICAgIFxuc2VhczIgICAgICAgICAgMC4wOTI0OTAxICAwLjA2OTIwNjcgICAxLjMzNiAwLjE4MjM5MSAgICBcbnNlYXMzICAgICAgICAgIDAuMTI5NjcwMiAgMC4wNzExNjMwICAgMS44MjIgMC4wNjkzOTggLiAgXG5zZWFzNCAgICAgICAgIC0wLjAwMDYyMTYgIDAuMDgxNTYyMSAgLTAuMDA4IDAuOTkzOTI1ICAgIFxuc2VhczUgICAgICAgICAtMC4wNDI1NzE1ICAwLjA3NTcxOTMgIC0wLjU2MiAwLjU3NDM2OCAgICBcbnNlYXM2ICAgICAgICAgLTAuMDQzMTIwNSAgMC4wOTAyNzQ3ICAtMC40NzggMC42MzMyMzEgICAgXG5zZWFzNyAgICAgICAgIC0wLjA4MzY3NzggIDAuMDgxNTE4NyAgLTEuMDI2IDAuMzA1NDY1ICAgIFxuc2VhczggICAgICAgICAgMC4wNzI0MzY0ICAwLjEyNzE0NzQgICAwLjU3MCAwLjU2OTI5MyAgICBcbnNlYXM5ICAgICAgICAgIDAuMDQxMDY2NyAgMC4wOTg4MzIxICAgMC40MTYgMC42NzgwNTAgICAgXG5zZWFzMTAgICAgICAgIC0wLjExMDUzMDggIDAuMDc3NDUyOSAgLTEuNDI3IDAuMTU0NTY5ICAgIFxuc2VhczExICAgICAgICAtMC4wOTY1OTM3ICAwLjA3NDMwNzIgIC0xLjMwMCAwLjE5NDU5NiAgICBcbnNlYXMxMiAgICAgICAgIDAuMDE2NjMyNCAgMC4wNzc4MTQ4ICAgMC4yMTQgMC44MzA4ODkgICAgXG4tLS1cblNpZ25pZi4gY29kZXM6ICAwIOKAmCoqKuKAmSAwLjAwMSDigJgqKuKAmSAwLjAxIOKAmCrigJkgMC4wNSDigJgu4oCZIDAuMSDigJgg4oCZIDFcblxuUmVzaWR1YWwgc3RhbmRhcmQgZXJyb3I6IDAuMjQ1OSBvbiAzMDkgZGVncmVlcyBvZiBmcmVlZG9tXG5NdWx0aXBsZSBSLVNxdWFyZWQ6IDAuMzE2MyxcdEFkanVzdGVkIFItc3F1YXJlZDogMC4yNzY0IFxuV2FsZCB0ZXN0OiAxMy44NyBvbiAxOCBhbmQgMzA5IERGLCAgcC12YWx1ZTogPCAyLjJlLTE2IFxuIn0= -->
+<pre><code>
+Call:
+ivreg(formula = fmla_iv4, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.62580 -0.15968  0.02076  0.14085  0.60218 
+
+Coefficients:
+                Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   -3.9750483  1.7781237  -2.236 0.026097 *  
+log(quantity)  0.2529086  0.1730393   1.462 0.144876    
+collusion      0.3681081  0.0538476   6.836 4.35e-11 ***
+dm1           -0.2019134  0.0552972  -3.651 0.000306 ***
+dm2           -0.1726670  0.0805900  -2.143 0.032931 *  
+dm3           -0.3186861  0.0647147  -4.924 1.38e-06 ***
+dm4           -0.2081806  0.1721876  -1.209 0.227574    
+seas1          0.0296711  0.0717509   0.414 0.679505    
+seas2          0.0924901  0.0692067   1.336 0.182391    
+seas3          0.1296702  0.0711630   1.822 0.069398 .  
+seas4         -0.0006216  0.0815621  -0.008 0.993925    
+seas5         -0.0425715  0.0757193  -0.562 0.574368    
+seas6         -0.0431205  0.0902747  -0.478 0.633231    
+seas7         -0.0836778  0.0815187  -1.026 0.305465    
+seas8          0.0724364  0.1271474   0.570 0.569293    
+seas9          0.0410667  0.0988321   0.416 0.678050    
+seas10        -0.1105308  0.0774529  -1.427 0.154569    
+seas11        -0.0965937  0.0743072  -1.300 0.194596    
+seas12         0.0166324  0.0778148   0.214 0.830889    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.2459 on 309 degrees of freedom
+Multiple R-Squared: 0.3163, Adjusted R-squared: 0.2764 
+Wald test: 13.87 on 18 and 309 DF,  p-value: &lt; 2.2e-16 </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The coefficient on <code>collusion</code> tells us that if there is a collusion between the firms, the price is 36.811 percent higher compared to the no-collusion case. The coefficient on <code>log(quantity)</code> implies decreasing returns to scale. Why? It implies that the marginal cost curve is upward-sloping. It happens only if the production function has decreasing returns to scale [proof omitted]. Therefore, we should pick the functional form of the production function accordingly. It implies that the cost is a convex function of the output.</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSFcgMyAoUmVwbGljYXRpb24gb2YgUG9ydGVyIDE5ODMpIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgpJbiB0aGlzIGhvbWV3b3JrLCB3ZSBhcmUgYXNrZWQgdG8gcmVwbGljYXRlIHRoZSByZXN1bHRzIG9mICJBIHN0dWR5IG9mIGNhcnRlbCBzdGFiaWxpdHk6IHRoZSBKb2ludCBFeGVjdXRpdmUgQ29tbWl0dGVlIiBwYXBlciBieSBSLiBILiBQb3J0ZXIgKDE5ODMsIFRoZSBCZWxsIEpvdXJuYWwgb2YgRWNvbm9taWNzKS4KCldlIHVzZSB0aGUgPGEgaHJlZj0iaHR0cHM6Ly9vY3cubWl0LmVkdS9jb3Vyc2VzL2Vjb25vbWljcy8xNC0yNzEtaW5kdXN0cmlhbC1vcmdhbml6YXRpb24taS1mYWxsLTIwMTMvYXNzaWdubWVudHMvUG9ydGVyLnBybiI+IGRhdGFzZXQgPC9hPiBwcm92aWRlZCBieSBQcm9mLiBHbGVubiBFbGxpc29uLgoKSSB3aWxsIHVzZSA8Yj5SPC9iPiBmb3IgdGhpcyBob21ld29yay4KClNvLCBsZXQncyBnZXQgc3RhcnRlZC4gCgpTdGVwIDA6IEknbGwgaW1wb3J0IHRoZSBuZWNlc3NhcnkgUiBwYWNrYWdlcyB0aGF0IEknbGwgdXNlIGxhdGVyLgoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoQUVSKQpsaWJyYXJ5KHN0YXRzKQpgYGAKPGJyPjwvYnI+CgpTdGVwIDE6IEkgaW1wb3J0IHRoZSBkYXRhc2V0IGludG8gUiwgYW5kIG5hbWUgdGhlIGNvbHVtbnMuCmBgYHtyfQpkYXRhIDwtIHJlYWQudGFibGUoImh0dHBzOi8vb2N3Lm1pdC5lZHUvY291cnNlcy9lY29ub21pY3MvMTQtMjcxLWluZHVzdHJpYWwtb3JnYW5pemF0aW9uLWktZmFsbC0yMDEzL2Fzc2lnbm1lbnRzL1BvcnRlci5wcm4iLCBoZWFkZXIgPSBUUlVFKQoKYGBgCjxicj48L2JyPgoKTGV0J3MgZmlyc3Qgc2VlIGhvdyB0aGUgZGF0YSBsb29rcy4KYGBge3J9CmdsaW1wc2UoZGF0YSkKc3VtbWFyeShkYXRhKQpgYGAKClRvIHN0YXJ0IHdpdGgsIGxldCdzIGRvIGEgc2ltcGxlIE9MUyByZWdyZXNzaW9uIG9mIGBgYCBsb2cocXVhbnRpdHkpYGBgIG9uIGEgY29uc3RhbnQsIGBgYApsb2cocHJpY2UpYGBgLCBgYGBsYWtlc2BgYCwgYW5kIGFsbCB0aGUgc2Vhc29uYWwgZHVtbWllcyAoZXhjZXB0IG9uZSwgc2luY2Ugd2UgaGF2ZSBhbHJlYWR5IGluY2x1ZGVkIGEgY29uc3RhbnQuIEknbGwgZXhjbHVkZSB0aGUgZmlyc3Qgb25lKS4gCgpgYGB7cn0Kc2Vhc19kdW1zIDwtIHBhc3RlKCJzZWFzIiwyOjEzLCBzZXA9IiIpCmZtbGFfb2xzIDwtIGFzLmZvcm11bGEocGFzdGUoImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyAiLCBwYXN0ZShzZWFzX2R1bXMsIGNvbGxhcHNlPSAiKyIpKSkKb2xzbW9kZWwgPC0gbG0oZm1sYV9vbHMsIGRhdGEgPSBkYXRhKQpzdW1tYXJ5KG9sc21vZGVsKQpgYGAKCkluIHRoaXMgKG5haXZlKSBPTFMgcmVncmVzc2lvbiwgdGhlIGNvZWZmaWNpZW50IGZvciBgbG9nKHByaWNlKWAsIHdoaWNoIHdlIGNhbiBjYWxsICJwcmljZSBlbGFzdGljaXR5IiwgaXMgYHIgY29lZmZpY2llbnRzKG9sc21vZGVsKVsibG9nKHByaWNlKSJdYC4gTm90ZSB0aGF0IGl0IGlzIGxlc3MgdGhhbiAxIGluIGFic29sdXRlIHRlcm1zLiBJdCBpbXBsaWVzIG5lZ2F0aXZlIG1hcmdpbmFsIHJldmVudWVzLiBXaHk/IENoZWNrIDxhIGhyZWY9Imh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL01hcmdpbmFsX3JldmVudWUjUmVsYXRpb25zaGlwX2JldHdlZW5fbWFyZ2luYWxfcmV2ZW51ZV9hbmRfZWxhc3RpY2l0eSI+dGhpczwvYT4uIEhlbmNlLCBpcyBub3QgY29uc2lzdGVudCB3aXRoIHBlci1wZXJpb2QgcHJvZml0IG1heGltaXphdGlvbi4gV2h5PyBGb3IgcHJvZml0IG1heGltaXphdGlvbiwgdGhlIG1hcmdpbmFsIGNvc3Qgc2hvdWxkIGJlIGVxdWFsIHRvIHRoZSBtYXJnaW5hbCByZXZlbnVlLiBTaW5jZSB0aGUgbWFyZ2luYWwgY29zdCBpcyBwb3NpdGl2ZSwgYW5kIHRoZSBtYXJnaW5hbCByZXZlbnVlIGlzIG5lZ2F0aXZlLCB0aGV5IGNhbm5vdCBiZSBlcXVhbC4gVGhlcmVmb3JlLCB0aGUgZXN0aW1hdGUgd2UgZ2V0IGZvciB0aGUgZWxhc3RpY2l0eSBpcyBub3QgcmVhc29uYWJsZS4gCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSFcgMyAoUmVwbGljYXRpb24gb2YgUG9ydGVyIDE5ODMpIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgpJbiB0aGlzIGhvbWV3b3JrLCB3ZSBhcmUgYXNrZWQgdG8gcmVwbGljYXRlIHRoZSByZXN1bHRzIG9mICJBIHN0dWR5IG9mIGNhcnRlbCBzdGFiaWxpdHk6IHRoZSBKb2ludCBFeGVjdXRpdmUgQ29tbWl0dGVlIiBwYXBlciBieSBSLiBILiBQb3J0ZXIgKDE5ODMsIFRoZSBCZWxsIEpvdXJuYWwgb2YgRWNvbm9taWNzKS4KCldlIHVzZSB0aGUgPGEgaHJlZj0iaHR0cHM6Ly9vY3cubWl0LmVkdS9jb3Vyc2VzL2Vjb25vbWljcy8xNC0yNzEtaW5kdXN0cmlhbC1vcmdhbml6YXRpb24taS1mYWxsLTIwMTMvYXNzaWdubWVudHMvUG9ydGVyLnBybiI+IGRhdGFzZXQgPC9hPiBwcm92aWRlZCBieSBQcm9mLiBHbGVubiBFbGxpc29uLgoKSSB3aWxsIHVzZSA8Yj5SPC9iPiBmb3IgdGhpcyBob21ld29yay4KClNvLCBsZXQncyBnZXQgc3RhcnRlZC4gCgpTdGVwIDA6IEknbGwgaW1wb3J0IHRoZSBuZWNlc3NhcnkgUiBwYWNrYWdlcyB0aGF0IEknbGwgdXNlIGxhdGVyLgoKYGBge3IgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoQUVSKQpsaWJyYXJ5KHN0YXRzKQpgYGAKPGJyPjwvYnI+CgpTdGVwIDE6IEkgaW1wb3J0IHRoZSBkYXRhc2V0IGludG8gUiwgYW5kIG5hbWUgdGhlIGNvbHVtbnMuCmBgYHtyfQpkYXRhIDwtIHJlYWQudGFibGUoImh0dHBzOi8vb2N3Lm1pdC5lZHUvY291cnNlcy9lY29ub21pY3MvMTQtMjcxLWluZHVzdHJpYWwtb3JnYW5pemF0aW9uLWktZmFsbC0yMDEzL2Fzc2lnbm1lbnRzL1BvcnRlci5wcm4iLCBoZWFkZXIgPSBUUlVFKQoKYGBgCjxicj48L2JyPgoKTGV0J3MgZmlyc3Qgc2VlIGhvdyB0aGUgZGF0YSBsb29rcy4KYGBge3J9CmdsaW1wc2UoZGF0YSkKc3VtbWFyeShkYXRhKQpgYGAKClRvIHN0YXJ0IHdpdGgsIGxldCdzIGRvIGEgc2ltcGxlIE9MUyByZWdyZXNzaW9uIG9mIGBgYCBsb2cocXVhbnRpdHkpYGBgIG9uIGEgY29uc3RhbnQsIGBgYApsb2cocHJpY2UpYGBgLCBgYGBsYWtlc2BgYCwgYW5kIGFsbCB0aGUgc2Vhc29uYWwgZHVtbWllcyAoZXhjZXB0IG9uZSwgc2luY2Ugd2UgaGF2ZSBhbHJlYWR5IGluY2x1ZGVkIGEgY29uc3RhbnQuIEknbGwgZXhjbHVkZSBvbmUpLiAKCmBgYHtyfQpzZWFzX2R1bXMgPC0gcGFzdGUoInNlYXMiLDE6MTIsIHNlcD0iIikKCmZtbGFfb2xzIDwtIGFzLmZvcm11bGEocGFzdGUoImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyAiLCBwYXN0ZShzZWFzX2R1bXMsIGNvbGxhcHNlPSAiKyIpKSkKCm9sc21vZGVsIDwtIGxtKGZtbGFfb2xzLCBkYXRhID0gZGF0YSkKCnN1bW1hcnkob2xzbW9kZWwpCmBgYAoKSW4gdGhpcyAobmFpdmUpIE9MUyByZWdyZXNzaW9uLCB0aGUgY29lZmZpY2llbnQgZm9yIGBsb2cocHJpY2UpYCwgd2hpY2ggd2UgY2FuIGNhbGwgInByaWNlIGVsYXN0aWNpdHkiLCBpcyBgciByb3VuZChjb2VmZmljaWVudHMob2xzbW9kZWwpWyJsb2cocHJpY2UpIl0sMylgLiBOb3RlIHRoYXQgaXQgaXMgbGVzcyB0aGFuIDEgaW4gYWJzb2x1dGUgdGVybXMuIEl0IGltcGxpZXMgbmVnYXRpdmUgbWFyZ2luYWwgcmV2ZW51ZXMuIFdoeT8gQ2hlY2sgPGEgaHJlZj0iaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTWFyZ2luYWxfcmV2ZW51ZSNSZWxhdGlvbnNoaXBfYmV0d2Vlbl9tYXJnaW5hbF9yZXZlbnVlX2FuZF9lbGFzdGljaXR5Ij50aGlzPC9hPi4gRm9yIHBlci1wZXJpb2QgcHJvZml0IG1heGltaXphdGlvbiwgd2Uga25vdyB0aGF0IHRoZSBtYXJnaW5hbCBjb3N0IHNob3VsZCBiZSBlcXVhbCB0byB0aGUgbWFyZ2luYWwgcmV2ZW51ZS4gU2luY2UgdGhlIG1hcmdpbmFsIGNvc3QgaXMgcG9zaXRpdmUsIGFuZCB0aGUgbWFyZ2luYWwgcmV2ZW51ZSBpcyBuZWdhdGl2ZSwgdGhleSBjYW5ub3QgYmUgZXF1YWwuIFRoZXJlZm9yZSwgdGhlIGVzdGltYXRlIHdlIGdldCBmb3IgdGhlIGVsYXN0aWNpdHkgaXMgbm90IHJlYXNvbmFibGUsIHNpbmNlIGl0IGNvbnRyYWRpY3RzIHdpdGggcGVyLXBlcmlvZCBwcm9maXQgbWF4aW1pemF0aW9uLgoKU28sIGxldCdzIHRyeSBzb21ldGhpbmcgZGlmZmVyZW50LgoKU3RlcCAyOiBBY3R1YWxseSB3ZSBrbmV3IHRoYXQgdGhlIGFib3ZlIHJlZ3Jlc3Npb24gd291bGRuJ3QgZ2l2ZSB1cyB0aGUgY29ycmVjdCBlc3RpbWF0ZXMgYmVjYXVzZSBvZiB0aGUgImVuZG9nZW5laXR5IGJpYXMiLiBUbyBvdmVyY29tZSB0aGlzIHByb2JsZW0sIHdlIHVzZSBJbnN0cnVtZW50YWwgVmFyaWFibGUgZXN0aW1hdGlvbi4KCkZvbGxvd2luZyB0aGUgaW5zdHJ1Y3Rpb25zIGluIHRoZSBob21ld29yaywgSSB1c2UgYGNvbGx1c2lvbmAgYXMgYW4gaW5zdHJ1bWVudCBmb3IgYHByaWNlYC4gIAoKYGBge3J9CmZtbGFfaXYxIDwtIGFzLmZvcm11bGEocGFzdGUoImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyAiLCBwYXN0ZShzZWFzX2R1bXMsIGNvbGxhcHNlPSAiKyIpLHBhc3RlKCJ8IGNvbGx1c2lvbiArIGxha2VzICsgIikscGFzdGUoc2Vhc19kdW1zLCBjb2xsYXBzZT0gIisiKSkpCgppdm1vZGVsMSA8LSBpdnJlZyhmbWxhX2l2MSxkYXRhPWRhdGEpCgpwcmludChmbWxhX2l2MSkKc3VtbWFyeShpdm1vZGVsMSkKYGBgCgpOb3cgdGhlIHJlc3VsdHMgbG9vayBiZXR0ZXIuIFdoeT8gTG9vayBhdCB0aGUgY29lZmZpY2llbnQgZm9yIGBsb2cocHJpY2UpYCwgd2hpY2ggaXMgdGhlIHByaWNlIGVsYXN0aWNpdHkgKG9mIGRlbWFuZCk6IGl0IGlzIGByIHJvdW5kKGNvZWZmaWNpZW50cyhpdm1vZGVsMSlbImxvZyhwcmljZSkiXSwzKWAuIFNvIHRoZSBuZXcgZXN0aW1hdGUgZm9yIGVsYXN0aWNpdHkgaXMgbXVjaCBjbG9zZXIgdG8gMSAoaW4gYWJzb2x1dGUgdGVybXMpLiBUaGUgZXN0aW1hdGVzIGFyZSBjbG9zZXIgdG8gdGhvc2UgcmVwb3J0ZWQgaW4gRWxsaXNvbiAoMTk5NCksIFRhYmxlIDIgKHRoZSBlc3RpbWF0aW9uIG9mIGRlbWFuZCB3aXRoIG5vIHNlcmlhbCBjb3JyZWxhdGlvbikuCgpXZSBjYW4gaW50ZXJwcmV0IHRoZSBjb2VmZmljaWVudCBvbiB0aGUgYGxha2VzYCB2YXJpYWJsZSBhbmQgdGhlIHNlYXNvbmFsIGR1bW1pZXMgYXMgZm9sbG93cy4gSWYgdGhlIGxha2VzIGFyZSBvcGVuIHRvIG5hdmlnYXRpb24sIHF1YW50aXR5IGRlbWFuZGVkIGZvciByYWlscm9hZCB0cmFuc3BvcnQgZGVjcmVhc2VzIGJ5IGByIHJvdW5kKDEwMCphYnMoY29lZmZpY2llbnRzKGl2bW9kZWwxKVsibGFrZXMiXSksMylgIHBlcmNlbnQgY29tcGFyZWQgdG8gdGhlIGNhc2Ugd2hlcmUgdGhlIGxha2VzIGFyZSBmcm96ZW4uIEluIHRoZSBmaXJzdCBzZWFzb24sIHRoZSBxdWFudGl0eSBkZW1hbmRlZCBpcyBgciByb3VuZCgxMDAqYWJzKGNvZWZmaWNpZW50cyhpdm1vZGVsMSlbInNlYXMxIl0pLDMpIGAgcGVyY2VudCBsb3dlciB0aGFuIHNlYXNvbiAxMywgY2V0ZXJpcyBwYXJpYnVzLiBJbiBzZWFzb24gMiwgdGhlIHF1YW50aXR5ICB0aGUgcXVhbnRpdHkgZGVtYW5kZWQgaXMgYHIgcm91bmQoMTAwKmFicyhjb2VmZmljaWVudHMoaXZtb2RlbDEpWyJzZWFzMiJdKSwzKSBgcGVyY2VudCBoaWdoZXIgdGhhbiBzZWFzb24gMTMuIEFuZCBzbyBvbi4gSG93ZXZlciwgYWxsIG9mIHRoZSBzZWFzb25hbCBkdW1taWVzIHR1cm4gb3V0IHRvIGJlIGluc2lnbmlmaWNhbnQuCgoKVGhlIFItc3F1YXJlZCBvZiB0aGlzIHJlZ3Jlc3Npb24gaXMgYHIgc3VtbWFyeShpdm1vZGVsMSkkci5zcXVhcmVkYC4KCgpBbHRlcm5hdGl2ZWx5LCBsZXQncyB1c2UgYGRtMSwgZG0yLGRtM2AgYW5kIGBkbTRgIGFzIGluc3RydW1lbnRzIGZvciBgcHJpY2VgIGluIGFkZGl0aW9uIHRvIGBjb2xsdXNpb25gLgpgYGB7cn0KCmRtX2R1bXMgPC0gcGFzdGUoImRtIiwxOjQsIHNlcD0iIikKCmZtbGFfaXYyIDwtIGFzLmZvcm11bGEocGFzdGUoImxvZyhxdWFudGl0eSkgfiBsb2cocHJpY2UpICsgbGFrZXMgKyAiLCBwYXN0ZShzZWFzX2R1bXMsIGNvbGxhcHNlPSAiKyIpLHBhc3RlKCJ8IiwgcGFzdGUoZG1fZHVtcyxjb2xsYXBzZSA9ICIrIiksICIrIGNvbGx1c2lvbiArIGxha2VzICsgIiksIHBhc3RlKHNlYXNfZHVtcyxjb2xsYXBzZT0iKyIpKSkKCml2bW9kZWwyIDwtIGl2cmVnKGZtbGFfaXYyLGRhdGE9ZGF0YSkKcHJpbnQoZm1sYV9pdjIpCnN1bW1hcnkoaXZtb2RlbDIpCmBgYAoKClRoZSByZXN1bHRzIGZvciB0aGUgbmV3IGVzdGltYXRpb24gYXJlIGFib3ZlLiBJdCB0dXJucyBvdXQgdGhhdCBhZGRpbmcgZXh0cmEgaW5zdHJ1bWVudHMgZG9lc24ndCBpbXByb3ZlIHRoZSBlc3RpbWF0ZXM7IHRoZSBlc3RpbWF0ZSBmb3IgZWxhc3RpY2l0eSB3YXMgY2xvc2VyIHRvIC0xIGluIHRoZSBwcmV2aW91cyByZWdyZXNzaW9uLgoKClN0ZXAgMzogTm93LCBsZXQncyBlc3RpbWF0ZSB0aGUgc3VwcGx5IGVxdWF0aW9uIGluc3RlYWQuIApcYmVnaW57ZXF1YXRpb259CiBcYmV0YSA9IFxmcmFje1xhbHBoYX17XGJldGF9ClxlbmR7ZXF1YXRpb259CgoKYGBge3J9CmZtbGFfaXY0IDwtIGFzLmZvcm11bGEocGFzdGUoImxvZyhwcmljZSkgfiBsb2cocXVhbnRpdHkpICsgY29sbHVzaW9uICsgIiwgcGFzdGUoZG1fZHVtcywgY29sbGFwc2U9ICIrIikscGFzdGUoIisiKSxwYXN0ZShzZWFzX2R1bXMsY29sbGFwc2U9IisiKSxwYXN0ZSgifCBsYWtlcyArIGNvbGx1c2lvbiArICIpLHBhc3RlKGRtX2R1bXMsIGNvbGxhcHNlPSAiKyIpLHBhc3RlKCIrIikscGFzdGUoc2Vhc19kdW1zLGNvbGxhcHNlID0iKyIpKSkKaXZtb2RlbDQgPC0gaXZyZWcoZm1sYV9pdjQsZGF0YT1kYXRhKQpwcmludChzdW1tYXJ5KGl2bW9kZWw0KSkKCmBgYAoKVGhlIGNvZWZmaWNpZW50IG9uIGBjb2xsdXNpb25gIHRlbGxzIHVzIHRoYXQgaWYgdGhlcmUgaXMgYSBjb2xsdXNpb24gYmV0d2VlbiB0aGUgZmlybXMsIHRoZSBwcmljZSBpcyBgciByb3VuZCgxMDAqY29lZmZpY2llbnRzKGl2bW9kZWw0KVsiY29sbHVzaW9uIl0sMylgIHBlcmNlbnQgaGlnaGVyIGNvbXBhcmVkIHRvIHRoZSBuby1jb2xsdXNpb24gY2FzZS4gVGhlIGNvZWZmaWNpZW50IG9uIGBsb2cocXVhbnRpdHkpYCBpbXBsaWVzIGRlY3JlYXNpbmcgcmV0dXJucyB0byBzY2FsZS4gV2h5PyBJdCBpbXBsaWVzIHRoYXQgdGhlIG1hcmdpbmFsIGNvc3QgY3VydmUgaXMgdXB3YXJkLXNsb3BpbmcuIEl0IGhhcHBlbnMgb25seSBpZiB0aGUgcHJvZHVjdGlvbiBmdW5jdGlvbiBoYXMgZGVjcmVhc2luZyByZXR1cm5zIHRvIHNjYWxlIFtwcm9vZiBvbWl0dGVkXS4gVGhlcmVmb3JlLCB3ZSBzaG91bGQgcGljayB0aGUgZnVuY3Rpb25hbCBmb3JtIG9mIHRoZSBwcm9kdWN0aW9uIGZ1bmN0aW9uIGFjY29yZGluZ2x5LiBJdCBpbXBsaWVzIHRoYXQgdGhlIGNvc3QgaXMgYSBjb252ZXggZnVuY3Rpb24gb2YgdGhlIG91dHB1dC4KCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg==</div>
 
 
 

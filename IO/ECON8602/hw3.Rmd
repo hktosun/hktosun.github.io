@@ -34,22 +34,73 @@ summary(data)
 ```
 
 To start with, let's do a simple OLS regression of ``` log(quantity)``` on a constant, ```
-log(price)```, ```lakes```, and all the seasonal dummies (except one, since we have already included a constant. I'll exclude the first one). 
+log(price)```, ```lakes```, and all the seasonal dummies (except one, since we have already included a constant. I'll exclude one). 
 
 ```{r}
-seas_dums <- paste("seas",2:13, sep="")
+seas_dums <- paste("seas",1:12, sep="")
+
 fmla_ols <- as.formula(paste("log(quantity) ~ log(price) + lakes + ", paste(seas_dums, collapse= "+")))
+
 olsmodel <- lm(fmla_ols, data = data)
+
 summary(olsmodel)
 ```
 
-In this (naive) OLS regression, the coefficient for `log(price)`, which we can call "price elasticity", is `r coefficients(olsmodel)["log(price)"]`. Note that it is less than 1 in absolute terms. It implies negative marginal revenues. Why? Check <a href="https://en.wikipedia.org/wiki/Marginal_revenue#Relationship_between_marginal_revenue_and_elasticity">this</a>. Hence, is not consistent with per-period profit maximization. Why? For profit maximization, the marginal cost should be equal to the marginal revenue. Since the marginal cost is positive, and the marginal revenue is negative, they cannot be equal. Therefore, the estimate we get for the elasticity is not reasonable. 
+In this (naive) OLS regression, the coefficient for `log(price)`, which we can call "price elasticity", is `r round(coefficients(olsmodel)["log(price)"],3)`. Note that it is less than 1 in absolute terms. It implies negative marginal revenues. Why? Check <a href="https://en.wikipedia.org/wiki/Marginal_revenue#Relationship_between_marginal_revenue_and_elasticity">this</a>. For per-period profit maximization, we know that the marginal cost should be equal to the marginal revenue. Since the marginal cost is positive, and the marginal revenue is negative, they cannot be equal. Therefore, the estimate we get for the elasticity is not reasonable, since it contradicts with per-period profit maximization.
+
+So, let's try something different.
+
+Step 2: Actually we knew that the above regression wouldn't give us the correct estimates because of the "endogeneity bias". To overcome this problem, we use Instrumental Variable estimation.
+
+Following the instructions in the homework, I use `collusion` as an instrument for `price`.  
+
+```{r}
+fmla_iv1 <- as.formula(paste("log(quantity) ~ log(price) + lakes + ", paste(seas_dums, collapse= "+"),paste("| collusion + lakes + "),paste(seas_dums, collapse= "+")))
+
+ivmodel1 <- ivreg(fmla_iv1,data=data)
+
+print(fmla_iv1)
+summary(ivmodel1)
+```
+
+Now the results look better. Why? Look at the coefficient for `log(price)`, which is the price elasticity (of demand): it is `r round(coefficients(ivmodel1)["log(price)"],3)`. So the new estimate for elasticity is much closer to 1 (in absolute terms). The estimates are closer to those reported in Ellison (1994), Table 2 (the estimation of demand with no serial correlation).
+
+We can interpret the coefficient on the `lakes` variable and the seasonal dummies as follows. If the lakes are open to navigation, quantity demanded for railroad transport decreases by `r round(100*abs(coefficients(ivmodel1)["lakes"]),3)` percent compared to the case where the lakes are frozen. In the first season, the quantity demanded is `r round(100*abs(coefficients(ivmodel1)["seas1"]),3) ` percent lower than season 13, ceteris paribus. In season 2, the quantity  the quantity demanded is `r round(100*abs(coefficients(ivmodel1)["seas2"]),3) `percent higher than season 13. And so on. However, all of the seasonal dummies turn out to be insignificant.
 
 
+The R-squared of this regression is `r summary(ivmodel1)$r.squared`.
 
 
+Alternatively, let's use `dm1, dm2,dm3` and `dm4` as instruments for `price` in addition to `collusion`.
+```{r}
+
+dm_dums <- paste("dm",1:4, sep="")
+
+fmla_iv2 <- as.formula(paste("log(quantity) ~ log(price) + lakes + ", paste(seas_dums, collapse= "+"),paste("|", paste(dm_dums,collapse = "+"), "+ collusion + lakes + "), paste(seas_dums,collapse="+")))
+
+ivmodel2 <- ivreg(fmla_iv2,data=data)
+print(fmla_iv2)
+summary(ivmodel2)
+```
 
 
+The results for the new estimation are above. It turns out that adding extra instruments doesn't improve the estimates; the estimate for elasticity was closer to -1 in the previous regression.
+
+
+Step 3: Now, let's estimate the supply equation instead. 
+\begin{equation}
+ \beta = \frac{\alpha}{\beta}
+\end{equation}
+
+
+```{r}
+fmla_iv4 <- as.formula(paste("log(price) ~ log(quantity) + collusion + ", paste(dm_dums, collapse= "+"),paste("+"),paste(seas_dums,collapse="+"),paste("| lakes + collusion + "),paste(dm_dums, collapse= "+"),paste("+"),paste(seas_dums,collapse ="+")))
+ivmodel4 <- ivreg(fmla_iv4,data=data)
+print(summary(ivmodel4))
+
+```
+
+The coefficient on `collusion` tells us that if there is a collusion between the firms, the price is `r round(100*coefficients(ivmodel4)["collusion"],3)` percent higher compared to the no-collusion case. The coefficient on `log(quantity)` implies decreasing returns to scale. Why? It implies that the marginal cost curve is upward-sloping. It happens only if the production function has decreasing returns to scale [proof omitted]. Therefore, we should pick the functional form of the production function accordingly. It implies that the cost is a convex function of the output.
 
 
 
