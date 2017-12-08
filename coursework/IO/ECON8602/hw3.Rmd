@@ -1,8 +1,11 @@
 ---
-title: "HW 3 (Replication of Porter 1983)"
-output: html_notebook
+title: 'HW 3: Replication of Porter (1983)'
+author: "Hasan K. Tosun"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output:
+  html_document: default
+  html_notebook: default
 ---
-<a href="../../index.html">Home</a>
 
 In this homework, we are asked to replicate the results of "A study of cartel stability: the Joint Executive Committee" paper by R. H. Porter (1983, The Bell Journal of Economics).
 
