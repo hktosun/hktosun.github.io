@@ -11726,9 +11726,7 @@ body {
 div#notebook {
   overflow: visible;
   border-top: none;
-}
-
-@media print {
+}@media print {
   div.cell {
     display: block;
     page-break-inside: avoid;
@@ -11749,7 +11747,7 @@ div#notebook {
 
 <!-- Loading mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -11790,12 +11788,11 @@ div#notebook {
   });
 </script>
 <form action="javascript:code_toggle()"><input type="submit" id="toggleButton" value="Hide Code"></form>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Section-2:-Random-Coefficient-Model">Section 2: Random Coefficient Model<a class="anchor-link" href="#Section-2:-Random-Coefficient-Model">&#182;</a></h1><p>We assumed that everyone has the same taste for each characteristic. However, it's not the case. Additionally, there may be some features of a good that are observable to the consumer, but not to the econometrician. To allow for these, we introduce a new model for the utility:
+<h1 id="Part-2:-Random-Coefficient-Model">Part 2: Random Coefficient Model<a class="anchor-link" href="#Part-2:-Random-Coefficient-Model">&#182;</a></h1><p>We assumed that everyone has the same taste for each characteristic. However, it's not the case. Additionally, there may be some features of a good that are observable to the consumer, but not to the econometrician. To allow for these, we introduce a new model for the utility:
 $$
 \begin{equation}
 u_{ijt} = \alpha \ln(y_{it}-p_{jt}) + x_{jt}\beta + \sum_{k=1}^K \sigma_k v_{ik} x_{jkt} + \xi_{jt} \epsilon_{ijt}
@@ -11804,8 +11801,8 @@ $$
 where $K$ is the number of (observable) characteristics, $\xi$ is the observable-to-consumer-but-not-to-econometricin component, $v_{ik}$ is a random variable that is distributed standard normal, and $y_{it}$ is the income of individual $i$ at time $t$. There are couple of arrangements I want to make before I go on. First, let's play with the first term a bit. 
 $$
 \begin{align}
-\ln(y_{it}-p_{jt}) &= \ln(1-\frac{p_{jt}}{y_{it}}) + \ln(y_{it}) \\
-& \approx  -\frac{p_{jt}}{y_{it}} + \ln(y_{it}) \\
+\ln(y_{it}-p_{jt}) &amp;= \ln(1-\frac{p_{jt}}{y_{it}}) + \ln(y_{it}) \\
+&amp; \approx  -\frac{p_{jt}}{y_{it}} + \ln(y_{it}) \\
 \end{align}
 $$
 Next, define $$\delta_{jt} \equiv x_{jt}\beta + \xi_{jt} $$ and $$\mu_{ijt} \equiv -\alpha\frac{p_{jt}}{y_{it}} + \sum_{k=1}^K \sigma_k v_{ik} x_{jkt} $$
@@ -11816,18 +11813,19 @@ u_{ijt} = \alpha \ln(y_{it}) + \delta_{jt} + \mu_{ijt} + \epsilon_{ijt}
 \end{equation}
 $$</p>
 <p>So, again, if individual $i$ buys good $j$, it means that good $j$ provides him more utility than any other good $k$, including the outside good. Therefore, we can say that the probability of individual $i$ buying $j$ at year $t$ is equal to</p>
-$$ \begin{align}
-Pr(i \text{ buys good } j \text{ in year } t) &= Pr(u_{ijt}> u_{ikt}, \forall k= {0,1,\ldots,J_t}, k\neq j) \\
-&= Pr(\alpha \ln(y_{it}) + \delta_{jt} + \mu_{ijt} + \epsilon_{ijt} > \alpha \ln(y_{it}) + \delta_{kt} + \mu_{ikt} + \epsilon_{ikt}  , \forall k= {0,1,\ldots,J_t}, k\neq j) \\
-&= Pr(\delta_{jt} + \mu_{ijt} + \epsilon_{ijt} > \delta_{kt} + \mu_{ikt} + \epsilon_{ikt}, \forall k= {0,1,\ldots,J_t}, k\neq j)\\
-&= \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})}
+<p>$$ \begin{align}
+Pr(i \text{ buys good } j \text{ in year } t) &amp;= Pr(u_{ijt}&gt; u_{ikt}, \forall k= {0,1,\ldots,J_t}, k\neq j) \\
+&amp;= Pr(\alpha \ln(y_{it}) + \delta_{jt} + \mu_{ijt} + \epsilon_{ijt} &gt; \alpha \ln(y_{it}) + \delta_{kt} + \mu_{ikt} + \epsilon_{ikt}  , \forall k= {0,1,\ldots,J_t}, k\neq j) \\
+&amp;= Pr(\delta_{jt} + \mu_{ijt} + \epsilon_{ijt} &gt; \delta_{kt} + \mu_{ikt} + \epsilon_{ikt}, \forall k= {0,1,\ldots,J_t}, k\neq j)\\
+&amp;= \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})}
 \end{align} 
-$$<p>Assuming that the individuals are distributed with cdf $T$, we can write the probability of good $j$ being sold in year $t$ as
+$$</p>
+<p>Assuming that the individuals are distributed with cdf $T$, we can write the probability of good $j$ being sold in year $t$ as
 $$
 \begin{align}
-Pr(\text{good } j \text{ being sold in year } t) &= \int_i Pr( i \text{ buys good } j \text{ in year } t) dT(i) \\
-& = \int_i \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})} dT(i) \\
-& \approx \frac{1}{ns} \sum_{i=1}^{ns} \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})} \\
+Pr(\text{good } j \text{ being sold in year } t) &amp;= \int_i Pr( i \text{ buys good } j \text{ in year } t) dT(i) \\
+&amp; = \int_i \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})} dT(i) \\
+&amp; \approx \frac{1}{ns} \sum_{i=1}^{ns} \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})} \\
 \end{align}
 $$</p>
 <p>Here is how we code this function.</p>
@@ -11837,7 +11835,7 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[275]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">s_comp</span><span class="p">(</span><span class="n">expdelta0</span><span class="p">,</span><span class="n">expmu</span><span class="p">):</span>
@@ -11853,27 +11851,27 @@ $$</p>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To calculate the probabilities, we need $\delta$'s and $\mu$'s. However, we don't know what $\delta$ is. Why? We don't have the data for $\xi_j$. So, how do we calculate $\delta_{jt}$? We approximate it numerically.</p>
 <p>Let's write the following recursion</p>
-$$
+<p>$$
 \begin{equation}
 \delta^{n+1} = \delta^{n} + \log(s^{DATA}) - \log(s(\theta)) \; \forall n=0,1,2,\ldots
 \end{equation}
-$$<p>where $\theta \equiv (\beta,\alpha,\sigma)$, and $\sigma \equiv (\sigma_0,\ldots,\sigma_k)$. Define $\theta_B \equiv (\alpha,\sigma)$ to be the set of parameters outside of $\delta$ for later use.</p>
+$$</p>
+<p>where $\theta \equiv (\beta,\alpha,\sigma)$, and $\sigma \equiv (\sigma_0,\ldots,\sigma_k)$. Define $\theta_B \equiv (\alpha,\sigma)$ to be the set of parameters outside of $\delta$ for later use.</p>
 <p>Define $s(\theta) \equiv Pr(\text{good } j \text{ being sold in year } t)$. So, $\theta$ is the set of parameters that determines $Pr(\text{good } j \text{ being sold in year } t)$.</p>
-<p>BLP shows that the above equation is a "contraction", i.e. for all $\epsilon>0$, there exists an integer $J_\epsilon$ such that for all $m>J_\epsilon$, $||(\delta^{m+1}-\delta^{m}||<\epsilon$. Therefore, we can use the function above to find the "best" $\delta$ that explains the market shares in the data.</p>
+<p>BLP shows that the above equation is a "contraction", i.e. for all $\epsilon&gt;0$, there exists an integer $J_\epsilon$ such that for all $m&gt;J_\epsilon$, $||(\delta^{m+1}-\delta^{m}||&lt;\epsilon$. Therefore, we can use the function above to find the "best" $\delta$ that explains the market shares in the data.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[276]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contraction</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span><span class="n">alpha</span><span class="p">):</span>
@@ -11898,8 +11896,7 @@ $$<p>where $\theta \equiv (\beta,\alpha,\sigma)$, and $\sigma \equiv (\sigma_0,\
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -11913,27 +11910,28 @@ $$
 where $Z$ is the instrument matrix. Before going into the GMM objective function, let's first calculate $\xi$'s.</p>
 <p>We noted earlier that $ \delta_{jt} \equiv x_{jt}\beta + \xi_{jt}$. Now that we "estimated" $\delta_{jt}$, we can back out $\xi_{jt}$. But first, we need $\beta$.</p>
 <p>We can get $\beta$'s by using 2SLS. How? Use the above equation to regress the $\delta$ we got from the contraction on the product characteristics $X$ and $\xi$, by using $Z$ as the instrument for $\xi$.</p>
-$$
+<p>$$
 \begin{equation}
 \hat{\beta} = (X^{'} Z \Phi^{-1} Z^{'} X)^{-1} X^{'} Z \Phi^{-1} Z^{'} \delta(\theta_B)
 \end{equation}
-$$<p>where $\Phi \equiv Z^{'}Z$ being the weighting matrix.</p>
+$$
+where $\Phi \equiv Z^{'}Z$ being the weighting matrix.</p>
 <p>Then, use $\hat{\beta}$ to back out $\xi$:
 $$ \xi_{jt} = \delta_{jt}(\theta) - x_{jt}\beta $$</p>
 <p>Next, define $$g \equiv \frac{1}{J} Z^{'}\xi$$</p>
 <p>Finally, define the GMM objective function as</p>
-$$ Q(\theta_B) \equiv g^{'}Wg $$<p>Any symmetric and positive-definite $W$ gives us the consistent estimates for the parameters. So we use the identity matrix, i.e. $W = I$</p>
+<p>$$ Q(\theta_B) \equiv g^{'}Wg $$</p>
+<p>Any symmetric and positive-definite $W$ gives us the consistent estimates for the parameters. So we use the identity matrix, i.e. $W = I$</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[277]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">sigma</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
     <span class="n">delta</span> <span class="o">=</span> <span class="n">contraction</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span><span class="n">alpha</span><span class="p">)</span>
@@ -11943,9 +11941,6 @@ $$ Q(\theta_B) \equiv g^{'}Wg $$<p>Any symmetric and positive-definite $W$ gives
     <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">nrow</span><span class="p">)</span><span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">xi</span><span class="p">))</span>
     <span class="n">ob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
     <span class="n">ob</span> <span class="o">=</span> <span class="n">ob</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:6.5f}</span><span class="s1">   </span><span class="si">{:6.5f}</span><span class="s1">   </span><span class="si">{:6.5f}</span><span class="s1">   </span><span class="si">{:6.5f}</span><span class="s1">   </span><span class="si">{:6.5f}</span><span class="s1">   </span><span class="si">{:6.5f}</span><span class="s1">   </span><span class="si">{:6.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>  <span class="nb">abs</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">ob</span><span class="p">))</span>
     <span class="k">return</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
 </pre></div>
 
@@ -11954,22 +11949,21 @@ $$ Q(\theta_B) \equiv g^{'}Wg $$<p>Any symmetric and positive-definite $W$ gives
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Finally, we find the parameters $\sigma$ and $\alpha$ by solving</p>
-$$
+<p>$$
 \begin{equation}
 \min_{\theta_B = (\sigma,\alpha)} Q(\theta_B)
 \end{equation}
-$$
+$$</p>
+
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -11980,7 +11974,7 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[278]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -11997,8 +11991,7 @@ $$
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -12009,7 +12002,7 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[279]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">)</span>
@@ -12020,8 +12013,7 @@ $$
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -12032,7 +12024,7 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[280]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ns</span> <span class="o">=</span> <span class="mi">1500</span>
@@ -12077,7 +12069,7 @@ $$
 <span class="n">price</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">nrow</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 
 
-<span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-6</span>
+<span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-8</span>
 </pre></div>
 
 </div>
@@ -12085,8 +12077,7 @@ $$
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -12097,15 +12088,29 @@ $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[281]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#init = np.array([-7.16200,-1.45583,-0.08428,0.05325,-0.24379,37.61207])</span>
-<span class="n">init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.612</span><span class="p">,</span> <span class="mf">4.628</span><span class="p">,</span> <span class="mf">1.818</span><span class="p">,</span> <span class="mf">1.050</span><span class="p">,</span> <span class="mf">2.056</span><span class="p">,</span><span class="mf">43.501</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.612</span><span class="p">,</span> <span class="mf">4.628</span><span class="p">,</span> <span class="mf">1.818</span><span class="p">,</span> <span class="mf">1.050</span><span class="p">,</span> <span class="mf">2.056</span><span class="p">,</span> <span class="mf">43.501</span><span class="p">])</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">soln</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">init</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;disp&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},)</span>
 <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time elapsed:&quot;</span><span class="p">,</span><span class="n">elapsed_time</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GMM objective:&quot;</span><span class="p">,</span> <span class="n">soln</span><span class="o">.</span><span class="n">fun</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sigma: &quot;</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">sizeX</span><span class="p">]),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha: &quot;</span><span class="p">,</span> <span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">sizeX</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;beta:&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">prem</span> <span class="o">@</span> <span class="n">contraction</span><span class="p">(</span><span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">sizeX</span><span class="p">],</span><span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">sizeX</span><span class="p">]))</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -12117,237 +12122,20 @@ $$
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
 
+
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>9.456685066223145
-3.61200   4.62800   1.81800   1.05000   2.05600   43.50100   433.45228
-9.666469097137451
-3.61200   4.62800   1.81800   1.05000   2.05600   43.50100   433.45228
-10.25153112411499
-3.61200   4.62800   1.81800   1.05000   2.05600   43.50100   433.45228
-10.417877912521362
-3.61200   4.62800   1.81800   1.05000   2.05600   43.50100   433.45228
-9.866004943847656
-3.61200   4.62800   1.81800   1.05000   2.05600   43.50100   433.45229
-10.619967937469482
-3.61200   4.62800   1.81800   1.05000   2.05600   43.50100   433.45228
-9.99603009223938
-3.61200   4.62800   1.81800   1.05000   2.05600   43.50100   433.45228
-9.885231971740723
-3.55042   4.60724   1.70305   0.06136   1.99206   43.46846   197.92273
-9.820586919784546
-3.55042   4.60724   1.70305   0.06136   1.99206   43.46846   197.92273
-10.03408694267273
-3.55042   4.60724   1.70305   0.06136   1.99206   43.46846   197.92273
-10.198553085327148
-3.55042   4.60724   1.70305   0.06136   1.99206   43.46846   197.92273
-10.621930122375488
-3.55042   4.60724   1.70305   0.06136   1.99206   43.46846   197.92273
-10.975230932235718
-3.55042   4.60724   1.70305   0.06136   1.99206   43.46846   197.92273
-11.603277921676636
-3.55042   4.60724   1.70305   0.06136   1.99206   43.46846   197.92273
-10.308584928512573
-3.48755   4.56791   1.63776   0.06859   1.95453   43.44645   192.36363
-12.099495887756348
-3.48755   4.56791   1.63776   0.06859   1.95453   43.44645   192.36363
-20.795851945877075
-3.48755   4.56791   1.63776   0.06859   1.95453   43.44645   192.36363
-11.58397388458252
-3.48755   4.56791   1.63776   0.06859   1.95453   43.44645   192.36363
-10.53048825263977
-3.48755   4.56791   1.63776   0.06859   1.95453   43.44645   192.36363
-9.911428213119507
-3.48755   4.56791   1.63776   0.06859   1.95453   43.44645   192.36363
-10.185797691345215
-3.48755   4.56791   1.63776   0.06859   1.95453   43.44645   192.36363
-9.863075971603394
-3.23609   4.41059   1.37659   0.09755   1.80442   43.35838   171.76798
-10.100975275039673
-3.23609   4.41059   1.37659   0.09755   1.80442   43.35838   171.76798
-9.438261032104492
-3.23609   4.41059   1.37659   0.09755   1.80442   43.35838   171.76798
-9.680043935775757
-3.23609   4.41059   1.37659   0.09755   1.80442   43.35838   171.76798
-9.47157335281372
-3.23609   4.41059   1.37659   0.09755   1.80442   43.35838   171.76798
-9.438627243041992
-3.23609   4.41059   1.37659   0.09755   1.80442   43.35838   171.76798
-9.560222864151001
-3.23609   4.41059   1.37659   0.09755   1.80442   43.35838   171.76798
-7.968548774719238
-0.64854   3.02108   0.49803   0.16319   0.70927   42.55235   78.72346
-7.8888421058654785
-0.64854   3.02108   0.49803   0.16319   0.70927   42.55235   78.72346
-7.964982032775879
-0.64854   3.02108   0.49803   0.16319   0.70927   42.55235   78.72346
-7.837028980255127
-0.64854   3.02108   0.49803   0.16319   0.70927   42.55235   78.72346
-8.116667985916138
-0.64854   3.02108   0.49803   0.16319   0.70927   42.55235   78.72346
-8.174720048904419
-0.64854   3.02108   0.49803   0.16319   0.70927   42.55235   78.72346
-8.070696115493774
-0.64854   3.02108   0.49803   0.16319   0.70927   42.55235   78.72346
-8.449958324432373
-0.82378   2.19946   0.00557   0.13440   0.17948   41.89952   51.59927
-8.227911949157715
-0.82378   2.19946   0.00557   0.13440   0.17948   41.89952   51.59927
-8.100069761276245
-0.82378   2.19946   0.00557   0.13440   0.17948   41.89952   51.59927
-8.207006931304932
-0.82378   2.19946   0.00557   0.13440   0.17948   41.89952   51.59927
-8.699725866317749
-0.82378   2.19946   0.00557   0.13440   0.17948   41.89952   51.59927
-9.713178873062134
-0.82378   2.19946   0.00557   0.13440   0.17948   41.89952   51.59927
-8.715296983718872
-0.82378   2.19946   0.00557   0.13440   0.17948   41.89952   51.59927
-8.341790914535522
-2.47811   0.90464   0.22085   0.12889   0.68128   40.99248   35.33805
-8.394635915756226
-2.47811   0.90464   0.22085   0.12889   0.68128   40.99248   35.33805
-8.284058809280396
-2.47811   0.90464   0.22085   0.12889   0.68128   40.99248   35.33805
-8.312050819396973
-2.47811   0.90464   0.22085   0.12889   0.68128   40.99248   35.33805
-8.29761791229248
-2.47811   0.90464   0.22085   0.12889   0.68128   40.99248   35.33805
-8.466795682907104
-2.47811   0.90464   0.22085   0.12889   0.68128   40.99248   35.33805
-8.594470262527466
-2.47811   0.90464   0.22085   0.12889   0.68128   40.99248   35.33805
-10.515913963317871
-5.25923   1.07847   0.29934   0.06359   2.18225   39.42363   22.15556
-10.497977018356323
-5.25923   1.07847   0.29934   0.06359   2.18225   39.42363   22.15556
-12.835556983947754
-5.25923   1.07847   0.29934   0.06359   2.18225   39.42363   22.15556
-13.2744460105896
-5.25923   1.07847   0.29934   0.06359   2.18225   39.42363   22.15556
-11.597127199172974
-5.25923   1.07847   0.29934   0.06359   2.18225   39.42363   22.15556
-11.44772481918335
-5.25923   1.07847   0.29934   0.06359   2.18225   39.42363   22.15556
-10.397838115692139
-5.25923   1.07847   0.29934   0.06359   2.18225   39.42363   22.15556
-9.538766860961914
-4.40738   0.34139   0.20408   0.08604   1.45375   39.79847   19.86511
-9.559760093688965
-4.40738   0.34139   0.20408   0.08604   1.45375   39.79847   19.86511
-9.647854089736938
-4.40738   0.34139   0.20408   0.08604   1.45375   39.79847   19.86511
-9.554465055465698
-4.40738   0.34139   0.20408   0.08604   1.45375   39.79847   19.86511
-9.583032846450806
-4.40738   0.34139   0.20408   0.08604   1.45375   39.79847   19.86511
-9.856496095657349
-4.40738   0.34139   0.20408   0.08604   1.45375   39.79847   19.86511
-9.525402307510376
-4.40738   0.34139   0.20408   0.08604   1.45375   39.79847   19.86511
-10.45611310005188
-5.22965   0.61458   0.12692   0.08879   1.40681   39.30666   16.93431
-12.169897079467773
-5.22965   0.61458   0.12692   0.08879   1.40681   39.30666   16.93431
-11.500202178955078
-5.22965   0.61458   0.12692   0.08879   1.40681   39.30666   16.93431
-11.77257227897644
-5.22965   0.61458   0.12692   0.08879   1.40681   39.30666   16.93431
-12.262754201889038
-5.22965   0.61458   0.12692   0.08879   1.40681   39.30666   16.93431
-9.919333219528198
-5.22965   0.61458   0.12692   0.08879   1.40681   39.30666   16.93431
-9.662977933883667
-5.22965   0.61458   0.12692   0.08879   1.40681   39.30666   16.93431
-10.055264711380005
-6.21233   0.89844   0.00085   0.09762   0.90343   38.60972   13.90661
-9.653754949569702
-6.21233   0.89844   0.00085   0.09762   0.90343   38.60972   13.90661
-9.533450841903687
-6.21233   0.89844   0.00085   0.09762   0.90343   38.60972   13.90661
-9.557766199111938
-6.21233   0.89844   0.00085   0.09762   0.90343   38.60972   13.90661
-9.570807933807373
-6.21233   0.89844   0.00085   0.09762   0.90343   38.60972   13.90661
-9.768141031265259
-6.21233   0.89844   0.00085   0.09762   0.90343   38.60972   13.90661
-9.535118103027344
-6.21233   0.89844   0.00085   0.09762   0.90343   38.60972   13.90661
-10.467103958129883
-7.78711   2.02841   0.17861   0.09016   0.24292   37.20865   12.93141
-10.969470977783203
-7.78711   2.02841   0.17861   0.09016   0.24292   37.20865   12.93141
-10.526823043823242
-7.78711   2.02841   0.17861   0.09016   0.24292   37.20865   12.93141
-10.569682836532593
-7.78711   2.02841   0.17861   0.09016   0.24292   37.20865   12.93141
-10.454623937606812
-7.78711   2.02841   0.17861   0.09016   0.24292   37.20865   12.93141
-10.770918846130371
-7.78711   2.02841   0.17861   0.09016   0.24292   37.20865   12.93141
-10.692326068878174
-7.78711   2.02841   0.17861   0.09016   0.24292   37.20865   12.93141
-10.085731029510498
-7.08648   1.50170   0.07337   0.09631   0.27515   37.61995   11.92561
-10.866150140762329
-7.08648   1.50170   0.07337   0.09631   0.27515   37.61995   11.92561
-11.231603145599365
-7.08648   1.50170   0.07337   0.09631   0.27515   37.61995   11.92561
-10.076972961425781
-7.08648   1.50170   0.07337   0.09631   0.27515   37.61995   11.92561
-10.082257270812988
-7.08648   1.50170   0.07337   0.09631   0.27515   37.61995   11.92561
-10.042956113815308
-7.08648   1.50170   0.07337   0.09631   0.27515   37.61995   11.92561
-10.055625200271606
-7.08648   1.50170   0.07337   0.09631   0.27515   37.61995   11.92561
-10.918974876403809
-7.24321   1.63011   0.10612   0.08418   0.14763   37.21567   12.39601
-10.541369915008545
-7.24321   1.63011   0.10612   0.08418   0.14763   37.21567   12.39601
-10.318263053894043
-7.24321   1.63011   0.10612   0.08418   0.14763   37.21567   12.39601
-10.256860971450806
-7.24321   1.63011   0.10612   0.08418   0.14763   37.21567   12.39601
-10.155671119689941
-7.24321   1.63011   0.10612   0.08418   0.14763   37.21567   12.39601
-10.666969776153564
-7.24321   1.63011   0.10612   0.08418   0.14763   37.21567   12.39601
-10.37922978401184
-7.24321   1.63011   0.10612   0.08418   0.14763   37.21567   12.39601
-10.802839994430542
-7.12487   1.53315   0.08139   0.05211   0.24392   37.52093   11.87359
-10.674896955490112
-7.12487   1.53315   0.08139   0.05211   0.24392   37.52093   11.87359
-10.235674858093262
-7.12487   1.53315   0.08139   0.05211   0.24392   37.52093   11.87359
-10.261731147766113
-7.12487   1.53315   0.08139   0.05211   0.24392   37.52093   11.87359
-10.70065188407898
-7.12487   1.53315   0.08139   0.05211   0.24392   37.52093   11.87359
-10.156445980072021
-7.12487   1.53315   0.08139   0.05211   0.24392   37.52093   11.87359
-10.209495067596436
-7.12487   1.53315   0.08139   0.05211   0.24392   37.52093   11.87359
-1057.7964072227478
+<pre>Time elapsed: 712.675005197525
+GMM objective: 11.9166063337
+sigma: [ 7.17557942  1.44283163  0.08571116  0.0538169   0.24045927]
+alpha: 37.621484581
+beta: [-7.07947795  7.78874906  2.37560592 -0.42078516  4.49694841]
 </pre>
 </div>
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
 </div>
 </div>
 
