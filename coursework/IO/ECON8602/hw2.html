@@ -11797,7 +11797,7 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <center>
 <h1> Homework 2: Replication of Berry, Levinsohn & Pakes (1995) </h1>
-<h3> Hasan K. Tosun, 12/08/2017   </h3>
+<h3> Hasan K. Tosun, December 2017  </h3>
 </center>
 </div>
 </div>
@@ -11808,17 +11808,17 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this homework, we are going to replicate "Automobile Prices in Market Equilibrium" paper by Berry, Levinsohn and Pakes (1995, Econometrica) [BLP hereafter].</p>
-<p>We will use the <a href="https://www.dropbox.com/s/5msdz1ip3azf5gt/cardata.txt?dl=0">data</a> provided by Prof. Amil Petrin.</p>
-<p>We will use <b>R</b> and <b>Python</b> for this homework.</p>
+<p>We use the <a href="https://www.dropbox.com/s/5msdz1ip3azf5gt/cardata.txt?dl=0">data</a> provided by Prof. Amil Petrin.</p>
+<p>We use <b>R</b> (in Part 1) and <b>Python</b> (in Part 2) for this homework.</p>
 <p>Let's get started.</p>
-<h2> Part 1: Data Preparation and Preliminary Estimation </h2><p>Step 0: Import the necessary R packages.</p>
+<h1> Part 1: Data Preparation and Preliminary Estimation </h1><p>Step 0: Import the necessary R packages.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[225]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kn">library</span><span class="p">(</span>MASS<span class="p">)</span>
@@ -11845,7 +11845,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[226]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>data <span class="o">&lt;-</span> read_tsv<span class="p">(</span><span class="s">&quot;cardata.txt&quot;</span><span class="p">,</span> col_types <span class="o">=</span> cols<span class="p">());</span>
@@ -11869,7 +11869,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[227]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>glimpse<span class="p">(</span>data<span class="p">)</span>
@@ -11908,7 +11908,7 @@ $ firmid  &lt;int&gt; 7, 7, 15, 15, 15, 15, 15, 19, 19, 19, 19, 19, 19, 19, 19, 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[228]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">summary</span><span class="p">(</span>data<span class="p">)</span>
@@ -11962,7 +11962,7 @@ $ firmid  &lt;int&gt; 7, 7, 15, 15, 15, 15, 15, 19, 19, 19, 19, 19, 19, 19, 19, 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>So, the data covers the period between 1971 and 1990. There are different number of car models provided. Call it $J_t$.</p>
+<p>So, the data covers the period between 1971 and 1990. There are different number of car models provided. Call it $J_t$. Define $J \equiv \sum_{t=71}^{90} J_t$.</p>
 <h3 id="Model-Description">Model Description<a class="anchor-link" href="#Model-Description">&#182;</a></h3><p>Suppose the utility to an individual is:
 $$
 u_{ij} = \alpha (y_{i}-p_j) + x_j\beta + \epsilon_{ij}
@@ -12027,7 +12027,7 @@ $$<p>We have the data for market share $s_{jt}$, prices $p_{jt}$, and observable
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[229]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>minusLL <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>beta0<span class="p">,</span> beta1<span class="p">,</span> beta2<span class="p">,</span> beta3<span class="p">,</span> beta4<span class="p">,</span> alpha<span class="p">){</span>
@@ -12061,7 +12061,7 @@ $$<p>We have the data for market share $s_{jt}$, prices $p_{jt}$, and observable
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[230]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>mlest <span class="o">&lt;-</span> mle2<span class="p">(</span>minusLL<span class="p">,</span> start <span class="o">=</span> <span class="kt">list</span><span class="p">(</span>beta0 <span class="o">=</span> <span class="m">0</span><span class="p">,</span> beta1 <span class="o">=</span> <span class="m">0</span><span class="p">,</span> beta2 <span class="o">=</span> <span class="m">0</span><span class="p">,</span> beta3 <span class="o">=</span> <span class="m">0</span><span class="p">,</span> beta4 <span class="o">=</span> <span class="m">0</span><span class="p">,</span> alpha <span class="o">=</span> <span class="m">0</span><span class="p">))</span>
@@ -12122,7 +12122,7 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[231]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>ownprice_MLE <span class="o">&lt;-</span>  <span class="kp">as.numeric</span><span class="p">(</span>coef<span class="p">(</span>mlest<span class="p">)[</span><span class="s">&quot;alpha&quot;</span><span class="p">])</span><span class="o">*</span>data<span class="o">$</span>price<span class="o">*</span><span class="p">(</span><span class="m">1</span><span class="o">-</span>data<span class="o">$</span>share<span class="p">)</span>
@@ -12135,7 +12135,7 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[232]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>HDACCO90_own_elas_mle <span class="o">&lt;-</span>  <span class="kp">as.numeric</span><span class="p">(</span>data<span class="p">[</span>data<span class="o">$</span>year <span class="o">==</span> <span class="m">90</span> <span class="o">&amp;</span> data<span class="o">$</span>modelid <span class="o">==</span> <span class="s">&quot;HDACCO&quot;</span><span class="p">,][</span><span class="s">&quot;price&quot;</span><span class="p">]</span> <span class="o">*</span> coef<span class="p">(</span>mlest<span class="p">)[</span><span class="s">&quot;alpha&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="m">1</span><span class="o">-</span>data<span class="p">[</span>data<span class="o">$</span>year <span class="o">==</span> <span class="m">90</span> <span class="o">&amp;</span> data<span class="o">$</span>modelid <span class="o">==</span> <span class="s">&quot;HDACCO&quot;</span><span class="p">,][</span><span class="s">&quot;share&quot;</span><span class="p">]))</span>
@@ -12183,7 +12183,7 @@ The own-price elasticity of 1974 Honda Civic is 0.6657317.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[233]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>data <span class="o">&lt;-</span> data <span class="o">%&gt;%</span> group_by<span class="p">(</span>year<span class="p">)</span> <span class="o">%&gt;%</span> mutate<span class="p">(</span>s0 <span class="o">=</span> <span class="m">1</span><span class="o">-</span><span class="kp">sum</span><span class="p">(</span>share<span class="p">))</span>
@@ -12249,7 +12249,7 @@ F-statistic: 279.2 on 5 and 2211 DF,  p-value: &lt; 2.2e-16
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[234]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>HDACCO90_own_elas_ols <span class="o">&lt;-</span>  <span class="kp">as.numeric</span><span class="p">(</span>data<span class="p">[</span>data<span class="o">$</span>year <span class="o">==</span> <span class="m">90</span> <span class="o">&amp;</span> data<span class="o">$</span>modelid <span class="o">==</span> <span class="s">&quot;HDACCO&quot;</span><span class="p">,][</span><span class="s">&quot;price&quot;</span><span class="p">]</span> <span class="o">*</span> coefficients<span class="p">(</span>lmodel<span class="p">)[</span><span class="s">&quot;price&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="m">1</span><span class="o">-</span>data<span class="p">[</span>data<span class="o">$</span>year <span class="o">==</span> <span class="m">90</span> <span class="o">&amp;</span> data<span class="o">$</span>modelid <span class="o">==</span> <span class="s">&quot;HDACCO&quot;</span><span class="p">,][</span><span class="s">&quot;share&quot;</span><span class="p">]))</span>
@@ -12315,7 +12315,7 @@ where $x_{jtk}$ is the $k$th characteristic of good $j$ at time $t$, and $\mathc
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[235]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>data <span class="o">&lt;-</span> data <span class="o">%&gt;%</span> group_by<span class="p">(</span>year<span class="p">,</span>firmid<span class="p">)</span> <span class="o">%&gt;%</span> 
@@ -12340,7 +12340,7 @@ data <span class="o">&lt;-</span> data <span class="o">%&gt;%</span> group_by<sp
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[236]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>tslsmodel <span class="o">&lt;-</span> ivreg<span class="p">(</span>logdif  <span class="o">~</span> const <span class="o">+</span> hpwt <span class="o">+</span> air <span class="o">+</span> mpd <span class="o">+</span> size <span class="o">+</span> price <span class="o">|</span> const <span class="o">+</span> hpwt <span class="o">+</span> air <span class="o">+</span> mpd <span class="o">+</span> size <span class="o">+</span> own_const <span class="o">+</span> own_hpwt <span class="o">+</span> own_air <span class="o">+</span> own_mpd <span class="o">+</span> own_size <span class="o">+</span> all_const <span class="o">+</span> all_hpwt <span class="o">+</span> all_air <span class="o">+</span> all_mpd <span class="o">+</span> all_size<span class="p">,</span> data<span class="o">=</span>data<span class="p">)</span>
@@ -12398,7 +12398,7 @@ Wald test: 203.5 on 5 and 2211 DF,  p-value: &lt; 2.2e-16
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[237]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>HDACCO90_own_elas_tsls <span class="o">&lt;-</span>  <span class="kp">as.numeric</span><span class="p">(</span>data<span class="p">[</span>data<span class="o">$</span>year <span class="o">==</span> <span class="m">90</span> <span class="o">&amp;</span> data<span class="o">$</span>modelid <span class="o">==</span> <span class="s">&quot;HDACCO&quot;</span><span class="p">,][</span><span class="s">&quot;price&quot;</span><span class="p">]</span> <span class="o">*</span> coefficients<span class="p">(</span>tslsmodel<span class="p">)[</span><span class="s">&quot;price&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="m">1</span><span class="o">-</span>data<span class="p">[</span>data<span class="o">$</span>year <span class="o">==</span> <span class="m">90</span> <span class="o">&amp;</span> data<span class="o">$</span>modelid <span class="o">==</span> <span class="s">&quot;HDACCO&quot;</span><span class="p">,][</span><span class="s">&quot;share&quot;</span><span class="p">]))</span> 
@@ -12449,10 +12449,338 @@ The own-price elasticity of 1974 Honda Civic is -0.653536.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[238]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>write_csv<span class="p">(</span>data<span class="p">,</span><span class="s">&quot;data.csv&quot;</span><span class="p">,</span>col_names <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1> Part 2: Random Coefficient Model </h1><p>We assumed that everyone has the same taste for each characteristic. However, it's not the case. Additionally, there may be some features of a good that are observable to the consumer, but not to the econometrician. To allow for these, we introduce a new model for the utility (following BLP (1999)):
+$$
+\begin{equation}
+u_{ijt} = -\alpha \frac{p_{jt}}{y_{it}} + x_{jt}\beta + \sum_{k=1}^K \sigma_k v_{ik} x_{jkt} + \xi_{jt} \epsilon_{ijt}
+\end{equation}
+$$
+where $K$ is the number of (observable) characteristics, $\xi$ is the observable-to-consumer-but-not-to-econometrician component, $v_{ik}$ is a random variable that is distributed standard normal, and $y_{it}$ is the income of individual $i$ at time $t$.</p>
+<p>The first term in the utility function was $\log(y_{it}-p_{jt})$ in BLP (1995). But that term is not defined if the price is higher than the income (and in our case, we have some observations where this is true). To eliminate this case, we used the utility function in BLP (1999).</p>
+<p>Now, define $$\delta_{jt} \equiv x_{jt}\beta + \xi_{jt} $$ and $$\mu_{ijt} \equiv -\alpha\frac{p_{jt}}{y_{it}} + \sum_{k=1}^K \sigma_k v_{ik} x_{jkt} $$
+Now, we have the following model:
+$$
+\begin{equation}
+u_{ijt} = \delta_{jt} + \mu_{ijt} + \epsilon_{ijt}
+\end{equation}
+$$</p>
+<p>So, again, if individual $i$ buys good $j$, it means that good $j$ provides him more utility than any other good $k$, including the outside good. Therefore, we can say that the probability of individual $i$ buying $j$ at year $t$ is equal to</p>
+$$ \begin{align}
+Pr(i \text{ buys good } j \text{ in year } t) &= Pr(u_{ijt}> u_{ikt}, \forall k= {0,1,\ldots,J_t}, k\neq j) \\
+&= Pr(\delta_{jt} + \mu_{ijt} + \epsilon_{ijt} > \delta_{kt} + \mu_{ikt} + \epsilon_{ikt}, \forall k= {0,1,\ldots,J_t}, k\neq j)\\
+&= \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})}
+\end{align} 
+$$<p>Assuming that the individuals are distributed with cdf $T$, we can write the probability of good $j$ being sold in year $t$ as
+$$
+\begin{align}
+Pr(\text{good } j \text{ being sold in year } t) &= \int_i Pr( i \text{ buys good } j \text{ in year } t) dT(i) \\
+& = \int_i \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})} dT(i) \\
+& \approx \frac{1}{ns} \sum_{i=1}^{ns} \frac{\exp(\delta_{jt} + \mu_{ijt})}{1 + \sum_{k=1}^{J_t} \exp(\delta_{kt} + \mu_{ikt})} \\
+\end{align}
+$$</p>
+<p>Here is how we code this function.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">s_comp</span><span class="p">(</span><span class="n">expdelta0</span><span class="p">,</span><span class="n">expmu</span><span class="p">):</span>
+    <span class="n">nom</span> <span class="o">=</span> <span class="n">expdelta0</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">ns</span><span class="p">))</span> <span class="o">*</span> <span class="n">expmu</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">nom</span><span class="p">))</span>
+    <span class="n">frac</span> <span class="o">=</span> <span class="n">nom</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">denom</span><span class="p">)</span>
+    <span class="n">s_computed</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">ns</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">frac</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">s_computed</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To calculate the probabilities, we need $\delta$'s and $\mu$'s. However, we don't know what $\delta$ is. Why? We don't have the data for $\xi_j$. So, how do we calculate $\delta_{jt}$? We approximate it numerically.</p>
+<p>Let's write the following recursion</p>
+$$
+\begin{equation}
+\delta^{n+1} = \delta^{n} + \log(s^{DATA}) - \log(s(\theta)) \; \forall n=0,1,2,\ldots
+\end{equation}
+$$<p>where $\theta \equiv (\beta,\alpha,\sigma)$, and $\sigma \equiv (\sigma_0,\ldots,\sigma_k)$. Define $\theta_B \equiv (\alpha,\sigma)$ to be the set of parameters outside of $\delta$ for later use.</p>
+<p>Define $s(\theta) \equiv Pr(\text{good } j \text{ being sold in year } t)$. So, $\theta$ is the set of parameters that determines $Pr(\text{good } j \text{ being sold in year } t)$.</p>
+<p>BLP shows that the above equation is a "contraction", i.e. for all $\epsilon>0$, there exists an integer $J_\epsilon$ such that for all $m>J_\epsilon$, $||(\delta^{m+1}-\delta^{m}||<\epsilon$. Therefore, we can use the function above to find the "best" $\delta$ that explains the market shares in the data.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">contraction</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span><span class="n">alpha</span><span class="p">):</span>
+    <span class="n">expdelta0</span> <span class="o">=</span> <span class="n">deltam</span>
+    <span class="n">expdelta0</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">nrow</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">draws</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">ns</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span><span class="n">sigma</span><span class="p">)</span>
+    <span class="n">expmu</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">draws</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">price</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">ns</span><span class="p">)))</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">y</span><span class="p">))</span>
+    <span class="n">dif</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">it</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">dif</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">it</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">):</span>
+        <span class="n">rat</span> <span class="o">=</span> <span class="n">s_data</span><span class="o">/</span><span class="n">s_comp</span><span class="p">(</span><span class="n">expdelta0</span><span class="p">,</span><span class="n">expmu</span><span class="p">)</span>
+        <span class="n">rat</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">nrow</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">expdelta1</span> <span class="o">=</span> <span class="n">expdelta0</span> <span class="o">*</span> <span class="n">rat</span>
+        <span class="n">dif</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">expdelta1</span><span class="o">/</span><span class="n">expdelta0</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">expdelta0</span> <span class="o">=</span> <span class="n">expdelta1</span>
+        <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">expdelta0</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For computational speed, I transformed the recursion above by taking exponentials of both sides. What next?</p>
+<h2 id="GMM-estimation">GMM estimation<a class="anchor-link" href="#GMM-estimation">&#182;</a></h2><p>The moment condition we use for the estimation is
+$$
+\begin{equation}
+E[\xi\mid Z] = 0
+\end{equation}
+$$
+where $Z$ is the instrument matrix. Before going into the GMM objective function, let's first calculate $\xi$'s.</p>
+<p>We noted earlier that $ \delta_{jt} \equiv x_{jt}\beta + \xi_{jt}$. Now that we "estimated" $\delta_{jt}$, we can back out $\xi_{jt}$. But first, we need $\beta$.</p>
+<p>We can get $\beta$'s by using 2SLS. How? Use the above equation to regress the $\delta$ we got from the contraction on the product characteristics $X$ and $\xi$, by using $Z$ as the instrument for $\xi$.</p>
+$$
+\begin{equation}
+\hat{\beta} = (X^{'} Z \Phi^{-1} Z^{'} X)^{-1} X^{'} Z \Phi^{-1} Z^{'} \delta(\theta_B)
+\end{equation}
+$$<p>where $\Phi \equiv Z^{'}Z$ being the weighting matrix.</p>
+<p>Then, use $\hat{\beta}$ to back out $\xi$:
+$$ \xi_{jt} = \delta_{jt}(\theta) - x_{jt}\beta $$</p>
+<p>Next, define $$g \equiv \frac{1}{J} Z^{'}\xi$$</p>
+<p>Finally, define the GMM objective function as</p>
+$$ Q(\theta_B) \equiv g^{'}Wg $$<p>Any symmetric and positive-definite $W$ gives us the consistent estimates for the parameters. So we use the identity matrix, i.e. $W = I$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">contraction</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">prem</span><span class="p">,</span><span class="n">delta</span><span class="p">)</span>
+    <span class="n">deltam</span> <span class="o">=</span> <span class="n">delta</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">beta</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">nrow</span><span class="p">)</span><span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">xi</span><span class="p">))</span>
+    <span class="n">ob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">ob</span> <span class="o">=</span> <span class="n">ob</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">ob</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, we find the parameters $\sigma$ and $\alpha$ by solving</p>
+$$
+\begin{equation}
+\min_{\theta_B = (\sigma,\alpha)} Q(\theta_B)
+\end{equation}
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Implementation">Implementation<a class="anchor-link" href="#Implementation">&#182;</a></h2><p>Step 0: Load necessary packages.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="k">import</span> <span class="n">inv</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">minimize</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Step 1: Import the data (prepared earlier with the R code above).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Step 2: Preparation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ns</span> <span class="o">=</span> <span class="mi">1500</span>
+<span class="n">nrow</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s2">&quot;const&quot;</span><span class="p">,</span> <span class="s2">&quot;hpwt&quot;</span><span class="p">,</span> <span class="s2">&quot;air&quot;</span><span class="p">,</span> <span class="s2">&quot;mpd&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">]]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">sizeX</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s2">&quot;const&quot;</span><span class="p">,</span> <span class="s2">&quot;hpwt&quot;</span><span class="p">,</span> <span class="s2">&quot;air&quot;</span><span class="p">,</span> <span class="s2">&quot;mpd&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="s2">&quot;own_const&quot;</span><span class="p">,</span> <span class="s2">&quot;own_hpwt&quot;</span><span class="p">,</span> <span class="s2">&quot;own_air&quot;</span><span class="p">,</span> <span class="s2">&quot;own_mpd&quot;</span><span class="p">,</span> <span class="s2">&quot;own_size&quot;</span><span class="p">,</span> <span class="s2">&quot;all_const&quot;</span><span class="p">,</span> <span class="s2">&quot;all_hpwt&quot;</span><span class="p">,</span> <span class="s2">&quot;all_air&quot;</span><span class="p">,</span> <span class="s2">&quot;all_mpd&quot;</span><span class="p">,</span> <span class="s2">&quot;all_size&quot;</span><span class="p">]]</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">Z</span><span class="p">)</span>
+<span class="n">prem</span> <span class="o">=</span> <span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Z</span> <span class="o">@</span> <span class="n">inv</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">@</span> <span class="n">Z</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Z</span> <span class="o">@</span> <span class="n">inv</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">@</span> <span class="n">Z</span><span class="o">.</span><span class="n">T</span>
+
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">])</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">AAT</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">nyears</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">6128</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span><span class="n">sizeX</span><span class="p">)</span>
+
+
+
+<span class="n">ym</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.01156</span><span class="p">,</span> <span class="mf">2.06526</span><span class="p">,</span> <span class="mf">2.07843</span><span class="p">,</span> <span class="mf">2.05775</span><span class="p">,</span> <span class="mf">2.02915</span><span class="p">,</span> <span class="mf">2.05346</span><span class="p">,</span> <span class="mf">2.06745</span><span class="p">,</span> <span class="mf">2.09805</span><span class="p">,</span> <span class="mf">2.10404</span><span class="p">,</span> <span class="mf">2.07208</span><span class="p">,</span> <span class="mf">2.06019</span><span class="p">,</span> <span class="mf">2.06561</span><span class="p">,</span> <span class="mf">2.07672</span><span class="p">,</span> <span class="mf">2.10437</span><span class="p">,</span> <span class="mf">2.12608</span><span class="p">,</span> <span class="mf">2.16426</span><span class="p">,</span> <span class="mf">2.18071</span><span class="p">,</span> <span class="mf">2.18856</span><span class="p">,</span> <span class="mf">2.21250</span><span class="p">,</span> <span class="mf">2.18377</span><span class="p">])</span>
+<span class="n">sigma_y</span> <span class="o">=</span> <span class="mf">1.72</span>
+<span class="n">ym</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">nyears</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">6128</span><span class="p">)</span>
+<span class="n">ar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nyears</span><span class="p">,</span><span class="n">ns</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">ym</span> <span class="o">+</span> <span class="n">sigma_y</span><span class="o">*</span><span class="n">ar</span><span class="p">)</span>
+
+
+<span class="k">global</span> <span class="n">deltam</span> 
+<span class="n">deltam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;logdif&quot;</span><span class="p">])</span>
+<span class="n">deltam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">deltam</span><span class="p">)</span>
+
+
+<span class="n">s_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;share&quot;</span><span class="p">])</span>
+
+<span class="n">price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">])</span>
+<span class="n">price</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">nrow</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-8</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Step 3: Estimation via minimization of GMM objective function with respect to the parameters $\sigma$ and $\alpha$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.612</span><span class="p">,</span> <span class="mf">4.628</span><span class="p">,</span> <span class="mf">1.818</span><span class="p">,</span> <span class="mf">1.050</span><span class="p">,</span> <span class="mf">2.056</span><span class="p">,</span> <span class="mf">43.501</span><span class="p">])</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">soln</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">init</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;L-BFGS-B&quot;</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;disp&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},)</span>
+<span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time elapsed:&quot;</span><span class="p">,</span><span class="n">elapsed_time</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GMM objective:&quot;</span><span class="p">,</span> <span class="n">soln</span><span class="o">.</span><span class="n">fun</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sigma: &quot;</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">sizeX</span><span class="p">]),</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha: &quot;</span><span class="p">,</span> <span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">sizeX</span><span class="p">],</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;beta:&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">prem</span> <span class="o">@</span> <span class="n">contraction</span><span class="p">(</span><span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">sizeX</span><span class="p">],</span><span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">sizeX</span><span class="p">]))</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -12466,50 +12794,16 @@ The own-price elasticity of 1974 Honda Civic is -0.653536.
 <div class="output_area">
 <div class="prompt"></div>
 
-
-<div class="output_html rendered_html output_subarea ">
-<ol class=list-inline>
-	<li>'modelid'</li>
-	<li>'year'</li>
-	<li>'hpwt'</li>
-	<li>'size'</li>
-	<li>'air'</li>
-	<li>'mpd'</li>
-	<li>'price'</li>
-	<li>'share'</li>
-	<li>'firmid'</li>
-	<li>'s0'</li>
-	<li>'logdif'</li>
-	<li>'const'</li>
-	<li>'own_const'</li>
-	<li>'own_hpwt'</li>
-	<li>'own_air'</li>
-	<li>'own_mpd'</li>
-	<li>'own_size'</li>
-	<li>'all_const'</li>
-	<li>'all_hpwt'</li>
-	<li>'all_air'</li>
-	<li>'all_mpd'</li>
-	<li>'all_size'</li>
-</ol>
-
-</div>
-
-</div>
-
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Time elapsed: 1600.7139041423798
+GMM objective: 36.4887900203
+sigma: [ 0.15931316  5.46924628  5.5880774   0.17531137  5.26241119]
+alpha: 48.0007083577
+beta: [-5.34348841  5.72331373 -2.25275835  0.23052835  1.43701791]
+</pre>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>
-</pre></div>
-
-</div>
 </div>
 </div>
 
