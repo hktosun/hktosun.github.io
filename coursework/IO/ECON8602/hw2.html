@@ -12469,7 +12469,7 @@ The own-price elasticity of 1974 Honda Civic is -0.653536.
 <h1> Part 2: Random Coefficient Model </h1><p>We assumed that everyone has the same taste for each characteristic. However, it's not the case. Additionally, there may be some features of a good that are observable to the consumer, but not to the econometrician. To allow for these, we introduce a new model for the utility (following BLP (1999)):
 $$
 \begin{equation}
-u_{ijt} = -\alpha \frac{p_{jt}}{y_{it}} + x_{jt}\beta + \sum_{k=1}^K \sigma_k v_{ik} x_{jkt} + \xi_{jt} \epsilon_{ijt}
+u_{ijt} = -\alpha \frac{p_{jt}}{y_{it}} + x_{jt}\beta + \sum_{k=1}^K \sigma_k v_{ik} x_{jkt} + \xi_{jt} + \epsilon_{ijt}
 \end{equation}
 $$
 where $K$ is the number of (observable) characteristics, $\xi$ is the observable-to-consumer-but-not-to-econometrician component, $v_{ik}$ is a random variable that is distributed standard normal, and $y_{it}$ is the income of individual $i$ at time $t$.</p>
