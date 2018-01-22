@@ -69,31 +69,48 @@ names(da) <- c("export","revenue","origin","destination","year")
 
 da <- da %>% mutate(y = 0*(year<2006) + 1*(year>=2006))
 
-bounds <- da %>% group_by(export) %>% summarize(me = sum(revenue)/n())
+bounds_o <- da %>% group_by(export) %>% summarize(me = sum(revenue)/n())
 bounds_dest <- da %>% group_by(destination, export) %>% summarize(me = sum(revenue)/n())
 bounds_origin_dest <- da %>% group_by(origin, destination, export) %>% summarize(me = sum(revenue)/n())
 bounds_dest_year <- da %>% group_by(destination, y, export) %>% summarize(me = sum(revenue)/n())
 
 N <- 1000
-boot <- matrix(nrow = N, ncol = 3)
+boot_o <- matrix(nrow = N, ncol = 3)
 
 for(i in 1:N){
-  bounds2 <- da %>% sample_frac(1,replace=TRUE) %>% group_by(export) %>% summarize(me = sum(revenue)/n())
-  boot[i,1] <- as.numeric(bounds2[1,2])
-  boot[i,2] <- as.numeric(bounds2[2,2])
+  bounds_o <- da %>% sample_frac(1,replace=TRUE) %>% group_by(export) %>% summarize(me = sum(revenue)/n())
+  boot_o[i,1] <- as.numeric(bounds_o[1,2])
+  boot_o[i,2] <- as.numeric(bounds_o[2,2])
   }
 ci <- 0 
 k <- 0
 while(ci < N*0.95){
   for (i in 1:N){
-    boot[i,3] <- (boot[i,2]<(bounds[2,2] + k))*(boot[i,1]>(bounds[1,2]-k))
+    boot_o[i,3] <- (boot_o[i,2]<(bounds[2,2] + k))*(boot[i,1]>(bounds[1,2]-k))
   }
   k <- k + 10000
   ci <- sum(boot[,3])
 }
-LB <- as.numeric(bounds[1,2]-(k-10000))
+
+ku_o <- ku + sd(boot_dest[,2])/20
+kl_o <- ku + sd(boot_dest[,2])/20
+
+  LB <- as.numeric(bounds[1,2])
 UB <- as.numeric(bounds[2,2] + (k-10000))
 cat("95% CI is [", LB, ",",UB, "]")
+
+
+table_o <- matrix(nrow = 1, ncol = 4)
+table_o[1,1] <- as.numeric(bounds[1,2])
+table_o[1,2] <- as.numeric(bounds[2,2])
+table_o[1,3] <- LB_dest[j]
+table_o[1,4] <- UB_dest[j]
+
+
+table_o <- as.data.frame(table_o)
+names(table_o) <- c("LB", "UB", "LB for 95% CI", "UB for 95% CI")
+
+
 
 
 
@@ -146,3 +163,28 @@ cat("Country", "\t", "Point estimates for destination country", "\t", "95% CI fo
 for (j in 1:5){
   cat(j, "\t [", as.numeric(bounds_dest[2*j-1,3]), ",", as.numeric(bounds_dest[2*j,3]), "]\t\t", "[", LB_dest[j], ",",UB_dest[j], "]", "\n")
 }
+
+table_dest <- matrix(nrow = 5, ncol = 5)
+for(j in 1:5){
+  table_dest[j,1] <- j
+  table_dest[j,2] <- as.numeric(bounds_dest[2*j-1,3])
+  table_dest[j,3] <- as.numeric(bounds_dest[2*j,3])
+  table_dest[j,4] <- LB_dest[j]
+  table_dest[j,5] <- UB_dest[j]
+}
+
+table_dest <- as.data.frame(table_dest)
+names(table_dest) <- c("country", "LB", "UB", "LB for 95% CI", "UB for 95% CI")
+table_dest
+
+
+
+
+# origin_dest -------------------------------------------------------------
+
+tab_origin_dest <- bounds_origin_dest %>% filter((origin != destination))
+tab_origin_dest_own <- bounds_origin_dest %>% filter((origin == destination))
+
+boot_dest <- matrix(nrow = N, ncol = 60)
+
+
