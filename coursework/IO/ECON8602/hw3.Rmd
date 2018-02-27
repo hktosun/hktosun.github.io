@@ -1,0 +1,163 @@
+---
+title: 'HW 3: Replication of Porter (1983)'
+author: "Hasan K. Tosun"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output:
+  html_document: default
+  html_notebook: default
+---
+
+In this homework, we are asked to replicate the results of "A study of cartel stability: the Joint Executive Committee" paper by R. H. Porter (1983, The Bell Journal of Economics).
+
+We use the <a href="https://ocw.mit.edu/courses/economics/14-271-industrial-organization-i-fall-2013/assignments/Porter.prn"> dataset </a> provided by Prof. Glenn Ellison.
+
+I will use <b>R</b> for this homework.
+
+So, let's get started. 
+
+<h2>Part 1: Some basics</h2>
+
+Step 0: I'll import the necessary R packages that I'll use later.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(AER)
+library(stats)
+```
+<br></br>
+
+Step 1: I import the dataset into R, and name the columns.
+```{r}
+data <- read.table("https://ocw.mit.edu/courses/economics/14-271-industrial-organization-i-fall-2013/assignments/Porter.prn", header = TRUE)
+
+```
+<br></br>
+
+Let's first see how the data looks.
+```{r}
+glimpse(data)
+summary(data)
+```
+
+To start with, let's do a simple OLS regression of ``` log(quantity)``` on a constant, ```
+log(price)```, ```lakes```, and all the seasonal dummies (except one, since we have already included a constant. I'll exclude one). 
+
+```{r}
+seas_dums <- paste("seas",1:12, sep="")
+
+fmla_ols <- as.formula(paste("log(quantity) ~ log(price) + lakes + ", paste(seas_dums, collapse= "+")))
+
+olsmodel <- lm(fmla_ols, data = data)
+
+summary(olsmodel)
+```
+
+In this (naive) OLS regression, the coefficient for `log(price)`, which we can call "price elasticity", is `r round(coefficients(olsmodel)["log(price)"],3)`. Note that it is less than 1 in absolute terms. It implies negative marginal revenues. Why? Check <a href="https://en.wikipedia.org/wiki/Marginal_revenue#Relationship_between_marginal_revenue_and_elasticity">this</a>. For per-period profit maximization, we know that the marginal cost should be equal to the marginal revenue. Since the marginal cost is positive, and the marginal revenue is negative, they cannot be equal. Therefore, the estimate we get for the elasticity is not reasonable, since it contradicts with per-period profit maximization.
+
+So, let's try something different.
+
+Step 2: Actually we knew that the above regression wouldn't give us the correct estimates because of the "endogeneity bias". To overcome this problem, we use Instrumental Variable estimation.
+
+Following the instructions in the homework, I use `collusion` as an instrument for `price`.  
+
+```{r}
+fmla_iv1 <- as.formula(paste("log(quantity) ~ log(price) + lakes + ", paste(seas_dums, collapse= "+"),paste("| collusion + lakes + "),paste(seas_dums, collapse= "+")))
+
+ivmodel1 <- ivreg(fmla_iv1,data=data)
+
+print(fmla_iv1)
+summary(ivmodel1)
+```
+
+Now the results look better. Why? Look at the coefficient for `log(price)`, which is the price elasticity (of demand): it is `r round(coefficients(ivmodel1)["log(price)"],3)`. So the new estimate for elasticity is much closer to 1 (in absolute terms). The estimates are closer to those reported in Ellison (1994), Table 2 (the estimation of demand with no serial correlation).
+
+We can interpret the coefficient on the `lakes` variable and the seasonal dummies as follows. If the lakes are open to navigation, quantity demanded for railroad transport decreases by `r round(100*abs(coefficients(ivmodel1)["lakes"]),3)` percent compared to the case where the lakes are frozen. In the first season, the quantity demanded is `r round(100*abs(coefficients(ivmodel1)["seas1"]),3) ` percent lower than season 13, ceteris paribus. In season 2, the quantity  the quantity demanded is `r round(100*abs(coefficients(ivmodel1)["seas2"]),3) `percent higher than season 13. And so on. However, all of the seasonal dummies turn out to be insignificant.
+
+
+The R-squared of this regression is `r summary(ivmodel1)$r.squared`.
+
+
+Alternatively, let's use `dm1, dm2,dm3` and `dm4` as instruments for `price` in addition to `collusion`.
+```{r}
+
+dm_dums <- paste("dm",1:4, sep="")
+
+fmla_iv2 <- as.formula(paste("log(quantity) ~ log(price) + lakes + ", paste(seas_dums, collapse= "+"),paste("|", paste(dm_dums,collapse = "+"), "+ collusion + lakes + "), paste(seas_dums,collapse="+")))
+
+ivmodel2 <- ivreg(fmla_iv2,data=data)
+print(fmla_iv2)
+summary(ivmodel2)
+```
+
+
+The results for the new estimation are above. It turns out that adding extra instruments doesn't improve the estimates; the estimate for elasticity was closer to -1 in the previous regression.
+
+
+Step 3: Now, let's estimate the supply equation instead. 
+
+```{r}
+fmla_iv4 <- as.formula(paste("log(price) ~ log(quantity) + collusion + ", paste(dm_dums, collapse= "+"),paste("+"),paste(seas_dums,collapse="+"),paste("| lakes + collusion + "),paste(dm_dums, collapse= "+"),paste("+"),paste(seas_dums,collapse ="+")))
+ivmodel4 <- ivreg(fmla_iv4,data=data)
+print(fmla_iv4)
+print(summary(ivmodel4))
+
+
+```
+
+The coefficient on `collusion` tells us that if there is a collusion between the firms, the price is `r round(100*coefficients(ivmodel4)["collusion"],3)` percent higher compared to the no-collusion case. The coefficient on `log(quantity)` implies decreasing returns to scale. Why? It implies that the marginal cost curve is upward-sloping. It happens only if the production function has decreasing returns to scale [proof omitted]. Therefore, the cost of the firm is a convex function of its output.
+
+
+<h2>Part 2: Model derivation and interpretation</h2>
+
+Suppose we have a linear demand specification:
+\begin{equation}
+Q_t = \alpha_0 + \alpha_1 P_t + \alpha_2 Lakes_t + u_t
+\end{equation}
+It implies that the slope of the demand curve is $1/\alpha_1$. Therefore, the slope of the marginal revenue curve is $2/\alpha_1$. Assume that the demand curve is of the form $P = K + \frac{1}{\alpha_1} Q$. So the marginal revenue curve is of the form $P = K + \frac{2}{\alpha_1} Q$. We know that $MR=MC$ at the optimal quantity, so define $Q^*$ as $MR(Q^*) = c$. Since $MR(Q^*) = c$, $K+\frac{2}{\alpha_1} = c$. Therefore, $K = c - \frac{2}{\alpha_1}Q$. The price that the monopolist charges is $D(Q^*)$. Plugging $K$ into the demand equation, we get $P^* = c - \frac{2}{\alpha_1}Q^* + \frac{1}{\alpha_1}Q^* = c - \frac{1}{\alpha_1}Q^*$.
+
+
+All of the calculations above assumed that the firm is a monopolist. Therefore, we should control for that in constructing a supply equation. Other structural factors also play role in the problem. Therefore, we can construct the supply equation as 
+
+\begin{equation}
+P_t = \beta_0 + \beta_1 Q_t + \beta_2 S_t + \beta_3 I_t + v_t
+\end{equation}
+
+
+If the industry is composed of competitive firms with total cost $c(Q_t) = c_0 Q_t + c_1 Q_t^2$, then $MC = P$ implies the pricing rule $P_t = c_0 + 2c_1 Q_t$. 
+
+<h2> Part 3: Causes of Price Wars </h2>
+
+Now, let's go back to the data and try to find the causes of price wars by using a probit regression. 
+
+First, we create a new variable that indicates the start of a price war, conditional on the previous period being collusive. Then, we use `quantity`, `lakes`, `dm1,dm2,dm3` and `dm4` as the explatanory variables, and estimate the likelihood of a start of a price war by using a probit regression.
+
+```{r}
+depvar <- c()
+for(i in 2:nrow(data)){
+  if(data$collusion[i-1]==1){
+    depvar[i] <- abs(data$collusion[i]-1)
+  }
+  else
+    depvar[i] <- NA
+}
+
+fmla_probit <-  as.formula(paste("depvar ~ quantity + lakes + ", paste(dm_dums, collapse= "+")))
+probitmodel <- glm(fmla_probit, family = binomial(link = "probit"), data = data)
+
+summary(probitmodel)
+
+```
+
+The coefficient on `quantity` implies that as the quantity increases, the probability of a price war increases, i.e. price wars are more likely to occur in booms. Additionally, the coefficient on `lakes` implies that price wars are less likely if the lakes are open to navigation. However, none of these coefficients are significantly different than zero.
+
+
+
+
+
+
+
+
+
+
+
+
